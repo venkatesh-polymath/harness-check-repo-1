@@ -1,0 +1,11 @@
+{
+  "status": "SUCCESS",
+  "scale": "probe",
+  "metrics": {
+    "gpu_available": true,
+    "device_name": "NVIDIA A10",
+    "matmul_ms": 1.3435970000017505
+  },
+  "subject_executed": "gpu smoke test",
+  "notes": "2048x2048 fp32 matmul on GPU, timed after warmup + cuda.synchronize()."
+}

@@ -1,0 +1,6 @@
+torch version: 2.13.0+cu130
+torch.cuda.is_available(): True
+torch.cuda.get_device_name(0): NVIDIA A10
+matmul result shape: (2048, 2048), sum=-195525.53
+matmul_ms: 1.3436
+wrote results/smoke-00/RESULTS.json
