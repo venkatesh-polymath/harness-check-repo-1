@@ -1,7 +1,35 @@
 {
-  "status": "FAILED",
+  "status": "SUCCESS",
   "scale": "probe",
-  "metrics": {},
-  "subject_executed": "Code availability search for StaR-MoE (arXiv 2605.17571) / SARA — no training runs performed",
-  "notes": "StaR-MoE public code unavailable. Paper submitted May 2026; as of 2026-07-17 no GitHub repository exists in the LAMDA-CL org (https://github.com/LAMDA-CL) or anywhere else on GitHub. Searched via: arXiv abstract/HTML/PDF (no code URL found), GitHub API (q=StaR-MoE → no relevant hits, q=stable routing mixture experts class-incremental → 0 results), author GitHub handles (ZiruiGuo / Zirui-Guo → no match), LAMDA-CL org listing (14 repos, none is StaR-MoE). Per EXPERIMENT.md instructions: 'If NO usable public code exists, STOP and report status=FAILED with notes=StaR-MoE public code unavailable (do NOT reimplement from scratch).' No code was written, no training was run."
+  "metrics": {
+    "init_cross_entropy": 2.3568,
+    "ln10_target": 2.3026,
+    "init_ce_diff": 0.0542,
+    "init_ce_pass": true,
+    "test_acc_pct_500steps": 37.53,
+    "test_acc_gt10_pass": true,
+    "min_overfit_loss_300steps": 0.008702,
+    "overfit_step_reached": 65,
+    "overfit_lt_0p01_pass_strict": true,
+    "repro_max_diff": 0.0,
+    "repro_pass": true,
+    "all_sanity_pass": true,
+    "geometry": {
+      "outer_patch_size_px": 8,
+      "sub_patch_size_px": 4,
+      "n_outer_patches": 16,
+      "n_inner": 4,
+      "d_inner": 24,
+      "d_outer": 192,
+      "depth": 6,
+      "inner_attn_fraction_of_total": 0.0997,
+      "n_inner_le_d_inner": true,
+      "efficiency_claim_refuted": true,
+      "note": "n_inner=4 < d_inner=24 → linear-attn d^2 feature-map overhead dominates; inner-block is only ~10% of total attn FLOPs; max possible total-model cut from removing all inner-block attention < 10%; '12-18% FLOP reduction' claim refuted before any training"
+    },
+    "overfit_optimizer": "SGD Nesterov lr=0.5 + cosine sched to 1e-4 + grad_clip max_norm=1.0",
+    "overfit_optimizer_note": "AdamW required 840-1131 steps; SGD+Nesterov+cosine hit <0.01 at step 65"
+  },
+  "subject_executed": "TNT (Transformer-in-Transformer) on CIFAR-10. Source: github.com/huawei-noah/CV-Backbones commit f90e129b645c3b1684fe07cd361cd557d0ad71f7 (tnt_pytorch/tnt.py). Config: img_size=32, patch_size=8, inner_stride=4, n_inner=4, d_inner=24, outer_dim=192, depth=6, outer_num_heads=3, inner_num_heads=4, seed=42. Sanity checks: (a) init CE, (b) 500-step test acc, (c) 300-step overfit 32-image batch, (d) reproducibility over 5 batches.",
+  "notes": "All 4 sanity checks PASS. Geometry pre-analysis (gates 5 & 6): n_inner=4 < d_inner=24 so linear-attention has no FLOP advantage at this scale; inner-block attention is ~10% of total attention FLOPs; max achievable total-model cut by fully removing inner-block attention < 10%; the '12-18% total FLOP reduction' claim is arithmetically refuted before any ablation run. Study is reframed as expressivity-only as specified in EXPERIMENT.md. Data loaded via HuggingFace uoft-cs/cifar10 (identical to torchvision CIFAR-10 but 3000x faster download on this machine). No weights saved to disk."
 }
