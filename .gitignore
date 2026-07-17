@@ -1,0 +1,13 @@
+
+_weights/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+*.onnx
+*.h5
+*.pkl
+*.gguf
+*.msgpack
+*.npz

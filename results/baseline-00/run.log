@@ -1,0 +1,63 @@
+=== baseline-00 probe run log ===
+Date: Fri Jul 17 12:06:41 UTC 2026
+GPU: NVIDIA A10 (23028 MiB VRAM)
+CUDA: 13.0
+Python: Python 3.12.10
+
+=== STEP: Code availability search ===
+
+Searching GitHub API for StaR-MoE...
+  total_count: 0
+  relevant items: 0
+  -> No relevant repositories found
+
+Searching GitHub API for stable routing mixture-of-experts...
+  total_count: 0
+  -> 0 results. StaR-MoE code not found on GitHub.
+
+Checking LAMDA-CL GitHub organization...
+Traceback (most recent call last):
+  File "<string>", line 6, in <module>
+TypeError: 'NoneType' object is not subscriptable
+  Total repos: 18
+  - Awesome-open-world-learning: Awesome-open-world-learning
+  - Awesome-Few-Shot-Class-Incremental-Learning: Awesome Few-Shot Class-Incremental Learning
+  - CVPR21-Proser: Learning Placeholders for Open-Set Recognition (CVPR'21 Oral
+  - MM21-Coil: The code repository for "Co-Transport for Class-Incremental 
+  - PyCIL: PyCIL: A Python Toolbox for Class-Incremental Learning
+  - CVPR22-Fact: Forward Compatible Few-Shot Class-Incremental Learning (CVPR
+  - TPAMI-Limit: The code repository for "Few-Shot Class-Incremental Learning
+  - CIL_Survey: Class-Incremental Learning: A Survey (TPAMI 2024)
+  - RevisitingCIL: Revisiting Class-Incremental Learning with Pre-Trained Model
+  - LAMDA-PILOT: 🎉 PILOT: A Pre-trained Model-Based Continual Learning Toolbo
+  - PROOF: Learning without Forgetting for Vision-Language Models (TPAM
+  - ICCV25-ENGINE: External Knowledge Injection for CLIP-Based Class-Incrementa
+
+=== CONCLUSION ===
+No public code or checkpoint found for StaR-MoE (arXiv 2605.17571).
+Per EXPERIMENT.md: reporting status=FAILED.
+
+=== run.log end ===
+
+=== LAMDA-CL org repos (clean listing) ===
+Total repos in LAMDA-CL org: 18
+  Awesome-open-world-learning: Awesome-open-world-learning
+  Awesome-Few-Shot-Class-Incremental-Learning: Awesome Few-Shot Class-Incremental Learning
+  CVPR21-Proser: Learning Placeholders for Open-Set Recognition (CVPR'21 Oral
+  MM21-Coil: The code repository for "Co-Transport for Class-Incremental 
+  PyCIL: PyCIL: A Python Toolbox for Class-Incremental Learning
+  CVPR22-Fact: Forward Compatible Few-Shot Class-Incremental Learning (CVPR
+  TPAMI-Limit: The code repository for "Few-Shot Class-Incremental Learning
+  CIL_Survey: Class-Incremental Learning: A Survey (TPAMI 2024)
+  RevisitingCIL: Revisiting Class-Incremental Learning with Pre-Trained Model
+  LAMDA-PILOT: 🎉 PILOT: A Pre-trained Model-Based Continual Learning Toolbo
+  PROOF: Learning without Forgetting for Vision-Language Models (TPAM
+  ICCV25-ENGINE: External Knowledge Injection for CLIP-Based Class-Incrementa
+  .github: 
+  ICCV2025-TUNA: Integrating Task-Specific and Universal Adapters for Pre-Tra
+  C3Box: C3Box: A CLIP-based Class-Incremental Learning Toolbox
+  Prism: Prism: A Plug-in Reproducible Infrastructure for Scalable Mu
+  TMM26-CORF: Cross-Sample Relational Fusion: Unifying Domain Generalizati
+  ICML2026-AREA: AREA: Attribute Extraction and Aggregation for CLIP-Based Cl
+Repos matching [moe,star-moe,starmoe,sara,routing]: 0
+VERDICT: StaR-MoE / SARA code NOT found in LAMDA-CL org.

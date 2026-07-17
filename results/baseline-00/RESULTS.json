@@ -1,0 +1,7 @@
+{
+  "status": "FAILED",
+  "scale": "probe",
+  "metrics": {},
+  "subject_executed": "Code availability search for StaR-MoE (arXiv 2605.17571) / SARA — no training runs performed",
+  "notes": "StaR-MoE public code unavailable. Paper submitted May 2026; as of 2026-07-17 no GitHub repository exists in the LAMDA-CL org (https://github.com/LAMDA-CL) or anywhere else on GitHub. Searched via: arXiv abstract/HTML/PDF (no code URL found), GitHub API (q=StaR-MoE → no relevant hits, q=stable routing mixture experts class-incremental → 0 results), author GitHub handles (ZiruiGuo / Zirui-Guo → no match), LAMDA-CL org listing (14 repos, none is StaR-MoE). Per EXPERIMENT.md instructions: 'If NO usable public code exists, STOP and report status=FAILED with notes=StaR-MoE public code unavailable (do NOT reimplement from scratch).' No code was written, no training was run."
+}
