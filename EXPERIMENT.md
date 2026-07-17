@@ -1,10 +1,10 @@
-# EXPERIMENT BRIEF — round baseline-00 (probe)
+# EXPERIMENT BRIEF — round increase_complexity-01 (probe)
 
 ## THIS ROUND (do exactly this)
-Establish the BASELINE ONLY (probe scale — minutes, tiny). 1) Clone TNT public code (github.com/huawei-noah/CV-Backbones, TNT dir) as the architecture skeleton; pin the commit. 2) Set up TNT with inner block n_inner=4, d_inner=24 on CIFAR-10 (torchvision, auto-download). 3) Run a TINY smoke that verifies the 4 sanity checks: (a) init cross-entropy ~ln(10)=2.30, (b) test acc >10% after a short run, (c) overfit a frozen 32-image batch to <0.01 loss within 300 steps, (d) note reproducibility. Do NOT run the full multi-seed baseline. Report the sanity-check numbers in metrics.
+Add the METHOD (increase complexity), probe scale — build on the baseline already committed in results/baseline-00/ and the TNT code in the repo. Replace softmax attention with LINEAR attention ONLY in TNT's inner block (n_inner=4, d_inner=24); keep the outer block softmax. Train on CIFAR-10 with the SAME setup/seed as the baseline (tiny probe run). Report top-1 test accuracy and the DELTA vs the softmax-inner baseline (read results/baseline-00/RESULTS.json for the baseline number). Goal: does inner-block linear attention degrade accuracy? Probe = short run to see if the effect shows.
 
 Prior rounds' code and results are already committed under results/*/. Read them
-for context and build on them; write this round's outputs under results/baseline-00/.
+for context and build on them; write this round's outputs under results/increase_complexity-01/.
 
 ## Idea
 Linear Attention in TITN's Inner Block: Does Local-Feature Efficiency Sacrifice Structural Expressivity?
@@ -37,4 +37,4 @@ Sanity gates: fixed seed, verify loss at init, input-independent baseline, overf
 - baseline: TNT with softmax inner attention, no distillation, trained from scratch on CIFAR-10 across seeds {0, 1, 2}; four sanity checks must all pass before any ablation arm launches: (1) bit-identical per-step loss values across two independent process launches at the same seed, (2) mean initial cross-entropy ∈ [2.29, 2.32] ≈ ln(10), (3) test accuracy > 10% (above majority-class dummy baseline), (4) training loss on a fixed frozen batch of 32 images reaches < 0.01 within 300 gradient steps
 - eval contract: CIFAR-10 and CIFAR-100 top-1 test accuracy; each arm reported as mean ± std over 3 seeds; primary comparison per dataset: two-sided Welch's t-test (α=0.05, df via Welch–Satterthwaite) between softmax-inner and linear-inner arms; pre-registered directional prediction: accuracy gap (softmax_inner − linear_inner) is strictly larger on CIFAR-100 than on CIFAR-10; effect size reported as Cohen's d; minimum detectable effect at 80% power computed from baseline seed variance before unblinding ablation results
 
-Record everything under results/baseline-00/. Do not commit weights.
+Record everything under results/increase_complexity-01/. Do not commit weights.

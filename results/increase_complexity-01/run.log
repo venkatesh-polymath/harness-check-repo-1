@@ -1,0 +1,80 @@
+/usr/local/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+Device: cuda
+============================================================
+TNT CIFAR-10 Probe — increase_complexity-01
+Inner block: ReLU-kernel LINEAR attention
+Outer block: softmax (unchanged from baseline)
+============================================================
+
+Geometry note: n_inner=4 < d_inner=24
+  softmax cost ∝ n²=16,  linear-kernel cost ∝ n*d=96
+  → linear attn is 6.0x MORE expensive per head than softmax at this scale
+  → study is purely expressivity (not efficiency)
+Loading CIFAR-10 from HuggingFace cache...
+`trust_remote_code` is not supported anymore.
+Please check that the Hugging Face dataset 'uoft-cs/cifar10' isn't based on a loading script and remove `trust_remote_code`.
+If the dataset is based on a loading script, please ask the dataset author to remove it and convert it to a standard format like Parquet.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Generating train split:   0%|          | 0/50000 [00:00<?, ? examples/s]Generating train split:  42%|████▏     | 21000/50000 [00:00<00:00, 208663.44 examples/s]Generating train split:  95%|█████████▌| 47500/50000 [00:00<00:00, 241358.37 examples/s]Generating train split: 100%|██████████| 50000/50000 [00:00<00:00, 238323.02 examples/s]
+Generating test split:   0%|          | 0/10000 [00:00<?, ? examples/s]Generating test split: 100%|██████████| 10000/10000 [00:00<00:00, 272231.89 examples/s]
+
+── Init loss check (inner=linear) ───────────
+  init loss=2.3565  ln(10)=2.3026  |diff|=0.0540  PASS=True
+
+── Training (inner=linear, seed=42, steps=500) ──
+  step  100  loss=2.1429  elapsed=3.9s
+  step  200  loss=1.8342  elapsed=6.9s
+  step  300  loss=1.6665  elapsed=10.0s
+  step  400  loss=1.8363  elapsed=13.3s
+  step  500  loss=1.8111  elapsed=16.5s
+  Test accuracy = 37.68%
+
+── Softmax-inner control run (same process, same loader seed) ──
+
+── Training (inner=softmax, seed=42, steps=500) ──
+  step  100  loss=2.0958  elapsed=3.5s
+  step  200  loss=1.7883  elapsed=6.7s
+  step  300  loss=1.7623  elapsed=9.7s
+  step  400  loss=1.8213  elapsed=13.1s
+  step  500  loss=1.7879  elapsed=16.2s
+  Test accuracy = 37.53%
+
+============================================================
+SUMMARY — increase_complexity-01
+============================================================
+  baseline (baseline-00, softmax-inner) : 37.53%
+  linear-inner (this run)               : 37.68%
+  softmax-inner control (this run)      : 37.53%
+  Δ vs committed baseline               : +0.15pp
+  Δ vs same-process control             : +0.15pp
+  init CE pass (linear model)           : True
+
+Wrote /workspace/results/increase_complexity-01/RESULTS.json
+{
+  "status": "SUCCESS",
+  "scale": "probe",
+  "metrics": {
+    "baseline_acc_pct": 37.53,
+    "linear_inner_acc_pct": 37.68,
+    "softmax_inner_control_acc_pct": 37.53,
+    "delta_vs_committed_baseline_pp": 0.15,
+    "delta_vs_same_process_control_pp": 0.15,
+    "init_ce_linear_model": 2.3565,
+    "init_ce_pass": true,
+    "n_steps": 500,
+    "seed": 42,
+    "geometry": {
+      "n_inner": 4,
+      "d_inner": 24,
+      "softmax_cost_prop": 16,
+      "linear_kernel_cost_prop": 96,
+      "linear_vs_softmax_cost_ratio": 6.0,
+      "note": "n_inner=4 < d_inner=24: linear-attn kernel is 6x MORE expensive per head than softmax; study is expressivity-only, no FLOP claim"
+    },
+    "inner_attn_method": "ReLU-kernel linear attention (Performer-style phi(x)=ReLU(x)+eps)",
+    "outer_attn_method": "softmax (unchanged)"
+  },
+  "subject_executed": "TNT (Transformer-in-Transformer) on CIFAR-10. Inner block: ReLU-kernel linear attention; outer block: softmax (identical to baseline). Config: img_size=32, patch_size=8, inner_stride=4, n_inner=4, d_inner=24, outer_dim=192, depth=6, outer_num_heads=3, inner_num_heads=4, seed=42. Probe: 500 AdamW steps (lr=1e-3, wd=0.05). Same protocol as baseline-00 for direct comparison.",
+  "notes": "Geometry: n_inner=4 < d_inner=24, so linear-attn kernel trick is 6x MORE expensive per head than softmax at this scale (n*d=96 vs n^2=16). Study is purely expressivity. Linear-inner accuracy = 37.68%, baseline (softmax-inner, baseline-00) = 37.53%, delta = +0.15pp. Same-process softmax control = 37.53%, within-process delta = +0.15pp."
+}

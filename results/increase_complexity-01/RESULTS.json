@@ -1,0 +1,27 @@
+{
+  "status": "SUCCESS",
+  "scale": "probe",
+  "metrics": {
+    "baseline_acc_pct": 37.53,
+    "linear_inner_acc_pct": 37.68,
+    "softmax_inner_control_acc_pct": 37.53,
+    "delta_vs_committed_baseline_pp": 0.15,
+    "delta_vs_same_process_control_pp": 0.15,
+    "init_ce_linear_model": 2.3565,
+    "init_ce_pass": true,
+    "n_steps": 500,
+    "seed": 42,
+    "geometry": {
+      "n_inner": 4,
+      "d_inner": 24,
+      "softmax_cost_prop": 16,
+      "linear_kernel_cost_prop": 96,
+      "linear_vs_softmax_cost_ratio": 6.0,
+      "note": "n_inner=4 < d_inner=24: linear-attn kernel is 6x MORE expensive per head than softmax; study is expressivity-only, no FLOP claim"
+    },
+    "inner_attn_method": "ReLU-kernel linear attention (Performer-style phi(x)=ReLU(x)+eps)",
+    "outer_attn_method": "softmax (unchanged)"
+  },
+  "subject_executed": "TNT (Transformer-in-Transformer) on CIFAR-10. Inner block: ReLU-kernel linear attention; outer block: softmax (identical to baseline). Config: img_size=32, patch_size=8, inner_stride=4, n_inner=4, d_inner=24, outer_dim=192, depth=6, outer_num_heads=3, inner_num_heads=4, seed=42. Probe: 500 AdamW steps (lr=1e-3, wd=0.05). Same protocol as baseline-00 for direct comparison.",
+  "notes": "Geometry: n_inner=4 < d_inner=24, so linear-attn kernel trick is 6x MORE expensive per head than softmax at this scale (n*d=96 vs n^2=16). Study is purely expressivity. Linear-inner accuracy = 37.68%, baseline (softmax-inner, baseline-00) = 37.53%, delta = +0.15pp. Same-process softmax control = 37.53%, within-process delta = +0.15pp."
+}
