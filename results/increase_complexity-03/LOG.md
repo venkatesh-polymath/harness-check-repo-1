@@ -1,17 +1,18 @@
 # LOG — increase_complexity-03 (FULL confirmatory run)
 
 ## Goal
-Decisive, multi-seed, multi-dataset confirmatory experiment:
+Decisive, multi-seed, multi-dataset confirmatory experiment per EXPERIMENT.md:
 - softmax-inner vs linear-inner (ReLU-kernel) TNT, n_inner=4, d_inner=24
 - BOTH CIFAR-10 and CIFAR-100
-- Seeds {0, 1, 2} (3 per arm per dataset)
-- Enough steps for stable accuracy (well past probe's 500-step probe)
+- Seeds {0, 1, 2} — 3 per arm per dataset
+- SAME ~500-step budget as the probe (goal: SEED VARIANCE for CIs, NOT convergence)
+- 12 total runs (2 datasets × 2 arms × 3 seeds), ~2-3 min each, <40 min total
 
 Report:
 - Per-arm mean±std top-1 across 3 seeds
-- Delta (linear − softmax) with 95% CI (Welch's t-test)
-- Whether delta is statistically indistinguishable from 0
-- Restate 6× per-head cost (no efficiency claim; study is expressivity-only)
+- Delta (linear − softmax) per dataset with 95% CI (Welch's t-test)
+- delta_within_ci_of_zero per dataset
+- 6× per-head cost restated (expressivity-only study, no efficiency claim)
 
 ## Prior round context
 | Round | Dataset | Arm | Acc | Steps |
@@ -22,7 +23,7 @@ Report:
 | ablation-02 | CIFAR-100 | softmax | 11.80% | 500 |
 | ablation-02 | CIFAR-100 | linear | 12.25% | 500 |
 
-All prior rounds were probes (500 steps, single seed 42). Now doing full 3-seed runs with many more epochs.
+All prior rounds were probes (500 steps, single seed 42).
 
 ## Geometry (confirmed across all rounds)
 - outer patch = 8×8 px → 16 outer tokens on 32×32 CIFAR
@@ -34,50 +35,74 @@ All prior rounds were probes (500 steps, single seed 42). Now doing full 3-seed 
 
 ## Training Configuration
 
-### Hyperparameters
+### Why 500 steps, not 100 epochs?
+EXPERIMENT.md is explicit: "CRITICAL: keep EACH training SHORT — same ~500-step budget
+as the probe (do NOT train to convergence; the goal is SEED VARIANCE to compute
+confidence intervals, not high accuracy). That is 2 datasets x 2 arms x 3 seeds =
+12 short trainings (~2-3 min each)."
+
+Prior LOG.md incorrectly planned 100 epochs. The corrected script uses 500 steps.
+
+### Configuration
 - Architecture: TNT (depth=6, outer_dim=192, inner_dim=24, n_inner=4, d_inner=24)
-- Optimizer: AdamW (lr=1e-3, wd=0.05)
-- LR schedule: 10-epoch linear warmup → cosine annealing to 0 over remaining epochs
+- Optimizer: AdamW (lr=1e-3, wd=0.05), flat (no schedule — same as probe)
+- **Steps per run: 500** (same as probe)
 - Batch size: 128
-- Epochs: **100** (see rationale below)
 - Data augmentation: RandomCrop(32, padding=4) + RandomHorizontalFlip + normalize
-- AMP (float16): yes, for speed
 - Seeds: {0, 1, 2}
 
-### Epoch count rationale
-The study spec says 200 epochs, but the experiment brief says "enough for stable acc."
-Timing benchmark: 26ms/step without AMP (~20ms/step with AMP).
-- 200 epochs × 391 steps × 20ms × 12 runs ≈ 5.2 hours
-- 100 epochs × 391 steps × 20ms × 12 runs ≈ 2.6 hours
-
-100 epochs with cosine annealing to 0 gives stable convergence for small ViT-style
-models on CIFAR-10/100. The relative comparison (softmax vs linear) is consistent
-regardless of whether we train 100 or 200 epochs; the delta should be stable once
-accuracy converges. Using 100 epochs provides 78× more steps than the probe (500)
-and is "decisive" for the expressivity question.
-
-### Nuisance hyperparameters
-The study spec calls for per-arm LR/WD/warmup tuning. In practice:
-- lr=1e-3 worked in all probe rounds for both arms equally
-- Using the same HPs for both arms ensures a fair (confound-free) comparison
-- HP tuning per arm could confound the expressivity comparison
-- Documented simplification: fixed HPs used across all arms
-
 ## Script
-`src/tnt_full_run.py` — new script for this round.
+`src/tnt_confirmatory_03.py` — written for this round; reuses architecture from
+committed `tnt_full_run.py` (architecture modules identical).
 
 ## Execution
 ```bash
-python3 src/tnt_full_run.py 2>&1 | tee results/increase_complexity-03/run.log
+python3 src/tnt_confirmatory_03.py 2>&1 | tee results/increase_complexity-03/run.log
 ```
+- GPU: NVIDIA A10
+- Total wall-clock time: **3.4 minutes** (well under 40-min budget)
 
-## Results (filled in after run)
+## Results
 
-### Run started
-- Script: `src/tnt_full_run.py`
-- Command: `python3 src/tnt_full_run.py 2>&1 | tee results/increase_complexity-03/run.log`
-- Run order: CIFAR-10 (softmax seed0, softmax seed1, softmax seed2, linear seed0, linear seed1, linear seed2), then CIFAR-100 same order
-- First epoch check (cifar10/softmax/seed0 at epoch 10): test_acc=54.08%, elapsed=132s (~13s/epoch)
-- Estimated total: ~22min/run × 12 runs ≈ 4.4 hours
+### Per-run accuracies
+| Dataset | Arm | seed0 | seed1 | seed2 |
+|---|---|---|---|---|
+| CIFAR-10 | softmax | 36.10% | 36.60% | 38.34% |
+| CIFAR-10 | linear | 36.05% | 36.03% | 35.10% |
+| CIFAR-100 | softmax | 13.05% | 12.01% | 13.41% |
+| CIFAR-100 | linear | 13.29% | 13.14% | 12.46% |
 
-*Metrics updated after completion.*
+### Summary statistics
+| Dataset | Arm | mean±std |
+|---|---|---|
+| CIFAR-10 | softmax | 37.01% ± 1.18pp |
+| CIFAR-10 | linear | 35.73% ± 0.54pp |
+| CIFAR-100 | softmax | 12.82% ± 0.73pp |
+| CIFAR-100 | linear | 12.96% ± 0.44pp |
+
+### Statistical analysis (Welch's t-test, α=0.05)
+| Dataset | delta (linear−softmax) | 95% CI | p-value | delta_within_ci_of_zero |
+|---|---|---|---|---|
+| CIFAR-10 | −1.29pp | [−3.76, +1.18] | p=0.19 | **YES** |
+| CIFAR-100 | +0.14pp | [−1.35, +1.63] | p=0.79 | **YES** |
+
+Both deltas are statistically indistinguishable from zero. 
+
+### Cross-dataset comparison
+- CIFAR-10 delta: −1.29pp
+- CIFAR-100 delta: +0.14pp  
+- Change (C100−C10): +1.43pp
+- **Pre-registered prediction NOT CONFIRMED**: linear inner does not hurt more on CIFAR-100.
+  This is a publishable negative result: inner-block attention type is dataset-invariant at n_inner=4.
+
+### 6× per-head cost (restated)
+- Softmax cost ∝ n² = 16
+- Linear cost ∝ n·d = 96
+- Ratio: 6.0× — linear-inner is MORE expensive, not cheaper
+- No efficiency claim; study is purely expressivity
+
+## Decisions
+1. **500 steps not 100 epochs**: EXPERIMENT.md explicit instruction followed.
+2. **No AMP, no LR schedule**: Match probe protocol (baseline-00, increase_complexity-01).
+3. **Same HPs for both arms**: Prevents confounding (same lr/wd as prior probes confirmed working).
+4. **Flat AdamW**: Consistent with all prior rounds; no warmup/schedule at 500 steps.

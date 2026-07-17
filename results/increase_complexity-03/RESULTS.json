@@ -1,0 +1,95 @@
+{
+  "status": "SUCCESS",
+  "scale": "full",
+  "metrics": {
+    "cifar10": {
+      "softmax_inner": {
+        "mean_acc_pct": 37.0133,
+        "std_acc_pct": 1.1758,
+        "per_seed_acc": [
+          36.1,
+          36.6,
+          38.34
+        ]
+      },
+      "linear_inner": {
+        "mean_acc_pct": 35.7267,
+        "std_acc_pct": 0.5428,
+        "per_seed_acc": [
+          36.05,
+          36.03,
+          35.1
+        ]
+      },
+      "delta_linear_minus_softmax_pp": -1.2867,
+      "ci_95": [
+        -3.7569,
+        1.1836
+      ],
+      "p_value": 0.189727,
+      "delta_within_ci_of_zero": true,
+      "welch_t": -1.7208,
+      "welch_df": 2.82
+    },
+    "cifar100": {
+      "softmax_inner": {
+        "mean_acc_pct": 12.8233,
+        "std_acc_pct": 0.727,
+        "per_seed_acc": [
+          13.05,
+          12.01,
+          13.41
+        ]
+      },
+      "linear_inner": {
+        "mean_acc_pct": 12.9633,
+        "std_acc_pct": 0.4423,
+        "per_seed_acc": [
+          13.29,
+          13.14,
+          12.46
+        ]
+      },
+      "delta_linear_minus_softmax_pp": 0.14,
+      "ci_95": [
+        -1.3457,
+        1.6257
+      ],
+      "p_value": 0.792633,
+      "delta_within_ci_of_zero": true,
+      "welch_t": 0.285,
+      "welch_df": 3.3
+    },
+    "cross_dataset": {
+      "delta_c10_pp": -1.2867,
+      "delta_c100_pp": 0.14,
+      "delta_change_c100_minus_c10_pp": 1.4267,
+      "prediction_result": "NOT CONFIRMED \u2014 CIFAR-100 delta not more negative than CIFAR-10; publishable negative: inner-block attention type dataset-invariant at n_inner=4"
+    },
+    "geometry": {
+      "n_inner": 4,
+      "d_inner": 24,
+      "softmax_cost_n_sq": 16,
+      "linear_cost_n_times_d": 96,
+      "linear_vs_softmax_ratio": 6.0,
+      "note": "n_inner=4 < d_inner=24: linear-attn 6\u00d7 MORE expensive per head than softmax. Study is expressivity-only; no efficiency claim."
+    },
+    "training_config": {
+      "n_steps_per_run": 500,
+      "batch_size": 128,
+      "base_lr": 0.001,
+      "weight_decay": 0.05,
+      "optimizer": "AdamW",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "total_runs": 12,
+      "note": "500 steps = same probe budget (goal: seed variance for CIs, not convergence)"
+    },
+    "total_wall_clock_min": 3.4
+  },
+  "subject_executed": "TNT (Transformer-in-Transformer) on CIFAR-10 and CIFAR-100. Two arms: softmax inner attention (baseline) vs ReLU-kernel linear attention (inner only). Outer block: softmax in both arms. Config: img_size=32, patch_size=8, inner_stride=4, n_inner=4, d_inner=24, outer_dim=192, depth=6, outer_num_heads=3, inner_num_heads=4. Training: 500 gradient steps per run (same 500-step probe budget). Seeds: [0, 1, 2]. Total runs: 12. Statistics: two-sided Welch's t-test, 95% CI per dataset.",
+  "notes": "Geometry: n_inner=4 < d_inner=24 \u2192 linear-attn 6\u00d7 MORE expensive per head. Study is expressivity-only. 500-step budget used (same as probe): goal is seed variance for CIs. CIFAR-10 delta: -1.2867pp CI=[-3.7569,+1.1836]. CIFAR-100 delta: +0.1400pp CI=[-1.3457,+1.6257]. Prediction: NOT CONFIRMED \u2014 CIFAR-100 delta not more negative than CIFAR-10; publishable negative: inner-block attention type dataset-invariant at n_inner=4. Total runtime: 3.4 min."
+}

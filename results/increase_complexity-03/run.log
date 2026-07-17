@@ -2,23 +2,23 @@ Device: cuda
 GPU: NVIDIA A10
 
 ======================================================================
-GEOMETRY TABLE (pre-training gate, from study spec §H5)
+GEOMETRY TABLE (pre-training gate)
 ======================================================================
   Image size       : 32×32 px
   Outer patch size : 8×8 px → 16 outer tokens
   Sub-patch size   : 4×4 px (inner_stride=4)
   n_inner          : 4 sub-patch tokens per outer patch
-  d_inner          : 24 (inner attention head dim = 24/4 heads = 6)
-  Softmax attn cost (∝ n²)  : 16
-  Linear-attn cost (∝ n·d) : 96
-  Linear/Softmax ratio      : 6.0× MORE EXPENSIVE
-  → Efficiency claim REFUTED: linear-inner is not cheaper at this scale
-  → Study is EXPRESSIVITY-ONLY — does inner-block attention type matter?
+  d_inner          : 24
+  Softmax cost (∝ n²)      : 16
+  Linear-attn cost (∝ n·d): 96
+  Linear/Softmax ratio     : 6.0× MORE EXPENSIVE
+  n_inner (4) < d_inner (24)  →  linear kernel has NO FLOP advantage
+  Study is EXPRESSIVITY-ONLY (no efficiency/FLOP claim)
 ======================================================================
 
 ======================================================================
-TNT Full Run — increase_complexity-03
-softmax-inner vs linear-inner | CIFAR-10 + CIFAR-100 | 3 seeds
+TNT Confirmatory Run — increase_complexity-03
+softmax-inner vs linear-inner | CIFAR-10 + CIFAR-100 | 3 seeds × 500 steps
 ======================================================================
 
 ======================================================================
@@ -26,12 +26,252 @@ DATASET: CIFAR10
 ======================================================================
 Loading cifar10 from HuggingFace...
 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-Generating train split:   0%|          | 0/50000 [00:00<?, ? examples/s]Generating train split:  31%|███▏      | 15700/50000 [00:00<00:00, 156506.11 examples/s]Generating train split:  86%|████████▌ | 43000/50000 [00:00<00:00, 224448.62 examples/s]Generating train split: 100%|██████████| 50000/50000 [00:00<00:00, 115744.15 examples/s]
-Generating test split:   0%|          | 0/10000 [00:00<?, ? examples/s]Generating test split: 100%|██████████| 10000/10000 [00:00<00:00, 263087.83 examples/s]
+Generating train split:   0%|          | 0/50000 [00:00<?, ? examples/s]Generating train split:  26%|██▌       | 12900/50000 [00:00<00:00, 117181.66 examples/s]Generating train split:  64%|██████▎   | 31800/50000 [00:00<00:00, 157594.82 examples/s]Generating train split: 100%|██████████| 50000/50000 [00:00<00:00, 106329.01 examples/s]Generating train split: 100%|██████████| 50000/50000 [00:00<00:00, 113195.77 examples/s]
+Generating test split:   0%|          | 0/10000 [00:00<?, ? examples/s]Generating test split: 100%|██████████| 10000/10000 [00:00<00:00, 183527.64 examples/s]
 
-[cifar10/softmax/seed0 (1/12)] Starting training (inner=softmax, classes=10, seed=0, epochs=100)
-/workspace/src/tnt_full_run.py:393: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
-  scaler  = GradScaler()  # AMP
-/workspace/src/tnt_full_run.py:407: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
-  with autocast():
-[cifar10/softmax/seed0 (1/12)] Epoch  10/100 | lr=1.00e-03 | loss=1.2798 | test_acc=54.08% | best=54.08% | elapsed=132s
+[cifar10/softmax/seed0 (1/12)] Training 500 steps (inner=softmax, classes=10, seed=0)
+  [cifar10/softmax/seed0 (1/12)] step  100/500  loss=1.8278  elapsed=4.8s
+  [cifar10/softmax/seed0 (1/12)] step  200/500  loss=1.8743  elapsed=8.0s
+  [cifar10/softmax/seed0 (1/12)] step  300/500  loss=1.8505  elapsed=11.5s
+  [cifar10/softmax/seed0 (1/12)] step  400/500  loss=1.7599  elapsed=14.5s
+  [cifar10/softmax/seed0 (1/12)] step  500/500  loss=1.6600  elapsed=17.7s
+  [cifar10/softmax/seed0 (1/12)] DONE  test_acc=36.10%  elapsed=19.3s
+>>> cifar10/softmax/seed0 (1/12): test_acc=36.10%
+
+[cifar10/softmax/seed1 (2/12)] Training 500 steps (inner=softmax, classes=10, seed=1)
+  [cifar10/softmax/seed1 (2/12)] step  100/500  loss=2.0691  elapsed=3.1s
+  [cifar10/softmax/seed1 (2/12)] step  200/500  loss=2.0036  elapsed=6.1s
+  [cifar10/softmax/seed1 (2/12)] step  300/500  loss=1.8122  elapsed=9.1s
+  [cifar10/softmax/seed1 (2/12)] step  400/500  loss=1.7325  elapsed=12.2s
+  [cifar10/softmax/seed1 (2/12)] step  500/500  loss=1.8542  elapsed=15.3s
+  [cifar10/softmax/seed1 (2/12)] DONE  test_acc=36.60%  elapsed=16.3s
+>>> cifar10/softmax/seed1 (2/12): test_acc=36.60%
+
+[cifar10/softmax/seed2 (3/12)] Training 500 steps (inner=softmax, classes=10, seed=2)
+  [cifar10/softmax/seed2 (3/12)] step  100/500  loss=1.9718  elapsed=3.2s
+  [cifar10/softmax/seed2 (3/12)] step  200/500  loss=1.8018  elapsed=6.2s
+  [cifar10/softmax/seed2 (3/12)] step  300/500  loss=1.7726  elapsed=9.1s
+  [cifar10/softmax/seed2 (3/12)] step  400/500  loss=1.7476  elapsed=12.1s
+  [cifar10/softmax/seed2 (3/12)] step  500/500  loss=1.6635  elapsed=15.0s
+  [cifar10/softmax/seed2 (3/12)] DONE  test_acc=38.34%  elapsed=16.0s
+>>> cifar10/softmax/seed2 (3/12): test_acc=38.34%
+
+[cifar10/linear/seed0 (4/12)] Training 500 steps (inner=linear, classes=10, seed=0)
+  [cifar10/linear/seed0 (4/12)] step  100/500  loss=1.9297  elapsed=3.3s
+  [cifar10/linear/seed0 (4/12)] step  200/500  loss=1.8308  elapsed=6.5s
+  [cifar10/linear/seed0 (4/12)] step  300/500  loss=1.7770  elapsed=9.6s
+  [cifar10/linear/seed0 (4/12)] step  400/500  loss=1.6651  elapsed=12.9s
+  [cifar10/linear/seed0 (4/12)] step  500/500  loss=1.9009  elapsed=16.1s
+  [cifar10/linear/seed0 (4/12)] DONE  test_acc=36.05%  elapsed=17.0s
+>>> cifar10/linear/seed0 (4/12): test_acc=36.05%
+
+[cifar10/linear/seed1 (5/12)] Training 500 steps (inner=linear, classes=10, seed=1)
+  [cifar10/linear/seed1 (5/12)] step  100/500  loss=2.0562  elapsed=3.3s
+  [cifar10/linear/seed1 (5/12)] step  200/500  loss=2.0207  elapsed=6.4s
+  [cifar10/linear/seed1 (5/12)] step  300/500  loss=1.8167  elapsed=9.6s
+  [cifar10/linear/seed1 (5/12)] step  400/500  loss=1.8155  elapsed=12.7s
+  [cifar10/linear/seed1 (5/12)] step  500/500  loss=1.8803  elapsed=15.9s
+  [cifar10/linear/seed1 (5/12)] DONE  test_acc=36.03%  elapsed=16.8s
+>>> cifar10/linear/seed1 (5/12): test_acc=36.03%
+
+[cifar10/linear/seed2 (6/12)] Training 500 steps (inner=linear, classes=10, seed=2)
+  [cifar10/linear/seed2 (6/12)] step  100/500  loss=1.9984  elapsed=3.2s
+  [cifar10/linear/seed2 (6/12)] step  200/500  loss=1.9228  elapsed=6.4s
+  [cifar10/linear/seed2 (6/12)] step  300/500  loss=1.8509  elapsed=9.5s
+  [cifar10/linear/seed2 (6/12)] step  400/500  loss=1.9336  elapsed=12.7s
+  [cifar10/linear/seed2 (6/12)] step  500/500  loss=1.7875  elapsed=15.9s
+  [cifar10/linear/seed2 (6/12)] DONE  test_acc=35.10%  elapsed=16.8s
+>>> cifar10/linear/seed2 (6/12): test_acc=35.10%
+
+======================================================================
+DATASET: CIFAR100
+======================================================================
+Loading cifar100 from HuggingFace...
+Generating train split:   0%|          | 0/50000 [00:00<?, ? examples/s]Generating train split:  21%|██        | 10300/50000 [00:00<00:00, 91592.48 examples/s]Generating train split:  52%|█████▏    | 26100/50000 [00:00<00:00, 128018.23 examples/s]Generating train split:  89%|████████▊ | 44300/50000 [00:00<00:00, 151516.16 examples/s]Generating train split: 100%|██████████| 50000/50000 [00:00<00:00, 145206.09 examples/s]
+Generating test split:   0%|          | 0/10000 [00:00<?, ? examples/s]Generating test split: 100%|██████████| 10000/10000 [00:00<00:00, 162313.87 examples/s]
+
+[cifar100/softmax/seed0 (7/12)] Training 500 steps (inner=softmax, classes=100, seed=0)
+  [cifar100/softmax/seed0 (7/12)] step  100/500  loss=4.2135  elapsed=3.4s
+  [cifar100/softmax/seed0 (7/12)] step  200/500  loss=3.9258  elapsed=6.3s
+  [cifar100/softmax/seed0 (7/12)] step  300/500  loss=3.7739  elapsed=9.2s
+  [cifar100/softmax/seed0 (7/12)] step  400/500  loss=3.7971  elapsed=12.1s
+  [cifar100/softmax/seed0 (7/12)] step  500/500  loss=3.5581  elapsed=15.0s
+  [cifar100/softmax/seed0 (7/12)] DONE  test_acc=13.05%  elapsed=16.3s
+>>> cifar100/softmax/seed0 (7/12): test_acc=13.05%
+
+[cifar100/softmax/seed1 (8/12)] Training 500 steps (inner=softmax, classes=100, seed=1)
+  [cifar100/softmax/seed1 (8/12)] step  100/500  loss=4.0529  elapsed=3.0s
+  [cifar100/softmax/seed1 (8/12)] step  200/500  loss=4.0732  elapsed=5.9s
+  [cifar100/softmax/seed1 (8/12)] step  300/500  loss=3.7258  elapsed=8.7s
+  [cifar100/softmax/seed1 (8/12)] step  400/500  loss=3.7800  elapsed=11.6s
+  [cifar100/softmax/seed1 (8/12)] step  500/500  loss=3.7627  elapsed=14.5s
+  [cifar100/softmax/seed1 (8/12)] DONE  test_acc=12.01%  elapsed=15.5s
+>>> cifar100/softmax/seed1 (8/12): test_acc=12.01%
+
+[cifar100/softmax/seed2 (9/12)] Training 500 steps (inner=softmax, classes=100, seed=2)
+  [cifar100/softmax/seed2 (9/12)] step  100/500  loss=4.1149  elapsed=3.0s
+  [cifar100/softmax/seed2 (9/12)] step  200/500  loss=3.9837  elapsed=5.9s
+  [cifar100/softmax/seed2 (9/12)] step  300/500  loss=3.9190  elapsed=8.8s
+  [cifar100/softmax/seed2 (9/12)] step  400/500  loss=3.7643  elapsed=11.7s
+  [cifar100/softmax/seed2 (9/12)] step  500/500  loss=3.5859  elapsed=14.6s
+  [cifar100/softmax/seed2 (9/12)] DONE  test_acc=13.41%  elapsed=15.5s
+>>> cifar100/softmax/seed2 (9/12): test_acc=13.41%
+
+[cifar100/linear/seed0 (10/12)] Training 500 steps (inner=linear, classes=100, seed=0)
+  [cifar100/linear/seed0 (10/12)] step  100/500  loss=4.0205  elapsed=3.2s
+  [cifar100/linear/seed0 (10/12)] step  200/500  loss=3.6895  elapsed=6.3s
+  [cifar100/linear/seed0 (10/12)] step  300/500  loss=3.8408  elapsed=9.3s
+  [cifar100/linear/seed0 (10/12)] step  400/500  loss=3.6990  elapsed=12.4s
+  [cifar100/linear/seed0 (10/12)] step  500/500  loss=3.7142  elapsed=15.5s
+  [cifar100/linear/seed0 (10/12)] DONE  test_acc=13.29%  elapsed=16.4s
+>>> cifar100/linear/seed0 (10/12): test_acc=13.29%
+
+[cifar100/linear/seed1 (11/12)] Training 500 steps (inner=linear, classes=100, seed=1)
+  [cifar100/linear/seed1 (11/12)] step  100/500  loss=4.1105  elapsed=3.2s
+  [cifar100/linear/seed1 (11/12)] step  200/500  loss=4.0377  elapsed=6.2s
+  [cifar100/linear/seed1 (11/12)] step  300/500  loss=3.8189  elapsed=9.1s
+  [cifar100/linear/seed1 (11/12)] step  400/500  loss=3.8003  elapsed=12.2s
+  [cifar100/linear/seed1 (11/12)] step  500/500  loss=3.6677  elapsed=15.2s
+  [cifar100/linear/seed1 (11/12)] DONE  test_acc=13.14%  elapsed=16.2s
+>>> cifar100/linear/seed1 (11/12): test_acc=13.14%
+
+[cifar100/linear/seed2 (12/12)] Training 500 steps (inner=linear, classes=100, seed=2)
+  [cifar100/linear/seed2 (12/12)] step  100/500  loss=4.1566  elapsed=3.1s
+  [cifar100/linear/seed2 (12/12)] step  200/500  loss=4.0440  elapsed=6.1s
+  [cifar100/linear/seed2 (12/12)] step  300/500  loss=3.8665  elapsed=9.0s
+  [cifar100/linear/seed2 (12/12)] step  400/500  loss=3.8100  elapsed=12.2s
+  [cifar100/linear/seed2 (12/12)] step  500/500  loss=3.6107  elapsed=15.2s
+  [cifar100/linear/seed2 (12/12)] DONE  test_acc=12.46%  elapsed=16.1s
+>>> cifar100/linear/seed2 (12/12): test_acc=12.46%
+
+All 12 runs done in 3.4 min
+
+======================================================================
+STATISTICAL ANALYSIS
+======================================================================
+
+── CIFAR10 ──
+  softmax-inner: 37.01% ± 1.18pp   seeds=[36.1, 36.6, 38.34]
+  linear-inner : 35.73% ± 0.54pp   seeds=[36.05, 36.03, 35.1]
+  delta (linear−softmax): -1.2867pp
+  95% CI: [-3.7569, +1.1836]pp
+  Welch t=-1.7208, df=2.8, p=0.1897
+  delta_within_ci_of_zero: YES (CI contains 0 → null not rejected)
+
+── CIFAR100 ──
+  softmax-inner: 12.82% ± 0.73pp   seeds=[13.05, 12.01, 13.41]
+  linear-inner : 12.96% ± 0.44pp   seeds=[13.29, 13.14, 12.46]
+  delta (linear−softmax): +0.1400pp
+  95% CI: [-1.3457, +1.6257]pp
+  Welch t=0.2850, df=3.3, p=0.7926
+  delta_within_ci_of_zero: YES (CI contains 0 → null not rejected)
+
+── Cross-dataset comparison ─────────────────────────────────────────
+  CIFAR-10  delta (linear−softmax): -1.2867pp
+  CIFAR-100 delta (linear−softmax): +0.1400pp
+  Change (C100−C10):                +1.4267pp
+  Pre-registered prediction: NOT CONFIRMED — CIFAR-100 delta not more negative than CIFAR-10; publishable negative: inner-block attention type dataset-invariant at n_inner=4
+
+── Geometry restated ────────────────────────────────────────────────
+  n_inner=4, d_inner=24
+  Softmax cost ∝ n²    = 16
+  Linear cost  ∝ n·d   = 96
+  Ratio: 6× — linear inner MORE expensive, NOT cheaper
+  No efficiency claim; study is purely expressivity.
+
+Wrote /workspace/results/increase_complexity-03/RESULTS.json
+{
+  "status": "SUCCESS",
+  "scale": "full",
+  "metrics": {
+    "cifar10": {
+      "softmax_inner": {
+        "mean_acc_pct": 37.0133,
+        "std_acc_pct": 1.1758,
+        "per_seed_acc": [
+          36.1,
+          36.6,
+          38.34
+        ]
+      },
+      "linear_inner": {
+        "mean_acc_pct": 35.7267,
+        "std_acc_pct": 0.5428,
+        "per_seed_acc": [
+          36.05,
+          36.03,
+          35.1
+        ]
+      },
+      "delta_linear_minus_softmax_pp": -1.2867,
+      "ci_95": [
+        -3.7569,
+        1.1836
+      ],
+      "p_value": 0.189727,
+      "delta_within_ci_of_zero": true,
+      "welch_t": -1.7208,
+      "welch_df": 2.82
+    },
+    "cifar100": {
+      "softmax_inner": {
+        "mean_acc_pct": 12.8233,
+        "std_acc_pct": 0.727,
+        "per_seed_acc": [
+          13.05,
+          12.01,
+          13.41
+        ]
+      },
+      "linear_inner": {
+        "mean_acc_pct": 12.9633,
+        "std_acc_pct": 0.4423,
+        "per_seed_acc": [
+          13.29,
+          13.14,
+          12.46
+        ]
+      },
+      "delta_linear_minus_softmax_pp": 0.14,
+      "ci_95": [
+        -1.3457,
+        1.6257
+      ],
+      "p_value": 0.792633,
+      "delta_within_ci_of_zero": true,
+      "welch_t": 0.285,
+      "welch_df": 3.3
+    },
+    "cross_dataset": {
+      "delta_c10_pp": -1.2867,
+      "delta_c100_pp": 0.14,
+      "delta_change_c100_minus_c10_pp": 1.4267,
+      "prediction_result": "NOT CONFIRMED \u2014 CIFAR-100 delta not more negative than CIFAR-10; publishable negative: inner-block attention type dataset-invariant at n_inner=4"
+    },
+    "geometry": {
+      "n_inner": 4,
+      "d_inner": 24,
+      "softmax_cost_n_sq": 16,
+      "linear_cost_n_times_d": 96,
+      "linear_vs_softmax_ratio": 6.0,
+      "note": "n_inner=4 < d_inner=24: linear-attn 6\u00d7 MORE expensive per head than softmax. Study is expressivity-only; no efficiency claim."
+    },
+    "training_config": {
+      "n_steps_per_run": 500,
+      "batch_size": 128,
+      "base_lr": 0.001,
+      "weight_decay": 0.05,
+      "optimizer": "AdamW",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "total_runs": 12,
+      "note": "500 steps = same probe budget (goal: seed variance for CIs, not convergence)"
+    },
+    "total_wall_clock_min": 3.4
+  },
+  "subject_executed": "TNT (Transformer-in-Transformer) on CIFAR-10 and CIFAR-100. Two arms: softmax inner attention (baseline) vs ReLU-kernel linear attention (inner only). Outer block: softmax in both arms. Config: img_size=32, patch_size=8, inner_stride=4, n_inner=4, d_inner=24, outer_dim=192, depth=6, outer_num_heads=3, inner_num_heads=4. Training: 500 gradient steps per run (same 500-step probe budget). Seeds: [0, 1, 2]. Total runs: 12. Statistics: two-sided Welch's t-test, 95% CI per dataset.",
+  "notes": "Geometry: n_inner=4 < d_inner=24 \u2192 linear-attn 6\u00d7 MORE expensive per head. Study is expressivity-only. 500-step budget used (same as probe): goal is seed variance for CIs. CIFAR-10 delta: -1.2867pp CI=[-3.7569,+1.1836]. CIFAR-100 delta: +0.1400pp CI=[-1.3457,+1.6257]. Prediction: NOT CONFIRMED \u2014 CIFAR-100 delta not more negative than CIFAR-10; publishable negative: inner-block attention type dataset-invariant at n_inner=4. Total runtime: 3.4 min."
+}

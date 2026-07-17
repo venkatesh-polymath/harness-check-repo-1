@@ -1,7 +1,7 @@
 # EXPERIMENT BRIEF — round increase_complexity-03 (full)
 
 ## THIS ROUND (do exactly this)
-FULL confirmatory run — build on committed code/results. Run softmax-inner vs linear-inner (n_inner=4,d_inner=24) on BOTH CIFAR-10 and CIFAR-100, across seeds {0,1,2}, more steps than the probe (enough for stable acc). For each dataset report per-arm mean±std top-1 across the 3 seeds, the delta (linear-softmax) with a 95% CI, and state explicitly whether the delta is statistically indistinguishable from 0 (null) — i.e. does linear inner attention significantly change accuracy? Also restate the 6x per-head cost. This is the decisive experiment for the paper.
+CONFIRMATORY run for CIs — MUST finish fast (<40 min total) and MUST write results/increase_complexity-03/RESULTS.json at the end. Reuse the committed TNT code. Run softmax-inner vs linear-inner (n_inner=4,d_inner=24) on BOTH CIFAR-10 and CIFAR-100 across seeds {0,1,2}. CRITICAL: keep EACH training SHORT — same ~500-step budget as the probe (do NOT train to convergence; the goal is SEED VARIANCE to compute confidence intervals, not high accuracy). That is 2 datasets x 2 arms x 3 seeds = 12 short trainings (~2-3 min each). After all 12, write RESULTS.json with: per (dataset,arm) mean±std top-1 over the 3 seeds, the delta (linear-softmax) with 95% CI per dataset, and a boolean 'delta_within_ci_of_zero' per dataset. Restate the 6x per-head cost.
 
 Prior rounds' code and results are already committed under results/*/. Read them
 for context and build on them; write this round's outputs under results/increase_complexity-03/.
