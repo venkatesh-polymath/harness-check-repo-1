@@ -1,0 +1,30 @@
+{
+  "status": "SUCCESS",
+  "scale": "probe",
+  "metrics": {
+    "cifar10_softmax_inner_acc_pct": 37.53,
+    "cifar10_linear_inner_acc_pct": 37.68,
+    "cifar10_delta_pp": 0.15,
+    "cifar100_softmax_inner_acc_pct": 11.8,
+    "cifar100_linear_inner_acc_pct": 12.25,
+    "cifar100_delta_pp": 0.45,
+    "delta_change_c100_minus_c10_pp": 0.3,
+    "prediction_confirmed": false,
+    "init_ce_cifar100": 4.6539,
+    "init_ce_pass": true,
+    "n_steps": 500,
+    "seed": 42,
+    "geometry": {
+      "n_inner": 4,
+      "d_inner": 24,
+      "softmax_cost_prop": 16,
+      "linear_kernel_cost_prop": 96,
+      "linear_vs_softmax_cost_ratio": 6.0,
+      "note": "n_inner=4 < d_inner=24: linear-attn kernel is 6x MORE expensive per head than softmax; study is expressivity-only, no FLOP claim."
+    },
+    "inner_attn_method": "ReLU-kernel linear attention (Performer-style phi(x)=ReLU(x)+eps)",
+    "outer_attn_method": "softmax (unchanged in both arms)"
+  },
+  "subject_executed": "TNT (Transformer-in-Transformer) on CIFAR-100. Arm A: softmax inner attention; Arm B: ReLU-kernel linear inner attention. Outer block: softmax in both arms. Config: img_size=32, patch_size=8, inner_stride=4, n_inner=4, d_inner=24, outer_dim=192, depth=6, outer_num_heads=3, inner_num_heads=4, num_classes=100, seed=42. Probe: 500 AdamW steps (lr=1e-3, wd=0.05). Direct contrast with increase_complexity-01 (same protocol on CIFAR-10).",
+  "notes": "CIFAR-10 delta (linear\u2212softmax): +0.15pp (from increase_complexity-01). CIFAR-100 delta (linear\u2212softmax): +0.45pp. delta_change (C100\u2212C10): +0.30pp. Prediction (NOT CONFIRMED: CIFAR-100 delta is not worse than CIFAR-10 delta.). Geometry: n_inner=4 < d_inner=24 \u2192 linear attn 6x MORE expensive per head; study is purely expressivity."
+}

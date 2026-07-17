@@ -1,0 +1,86 @@
+/usr/local/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+Device: cuda
+============================================================
+TNT CIFAR-100 Probe — ablation-02
+Inner block: ReLU-kernel LINEAR vs SOFTMAX attention
+Outer block: softmax (unchanged in both arms)
+============================================================
+
+Geometry: n_inner=4, d_inner=24
+  softmax cost ∝ n²=16
+  linear-kernel cost ∝ n*d=96
+  → linear attn is 6.0x MORE expensive per head
+  → study is purely expressivity (no efficiency claim)
+
+Prior CIFAR-10 numbers (increase_complexity-01):
+  softmax-inner : 37.53%
+  linear-inner  : 37.68%
+  delta         : +0.15pp
+Loading CIFAR-100 from HuggingFace cache...
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+── Init loss check (inner=linear, 100 classes) ───
+  init loss=4.6539  ln(100)=4.6052  |diff|=0.0487  PASS=True
+
+── Training (inner=softmax, 100 classes, seed=42, steps=500) ──
+  step  100  loss=4.3164  elapsed=3.8s
+  step  200  loss=3.9135  elapsed=6.8s
+  step  300  loss=3.8515  elapsed=9.8s
+  step  400  loss=3.9229  elapsed=13.2s
+  step  500  loss=3.8908  elapsed=16.5s
+  Test accuracy = 11.80%
+
+── Training (inner=linear, 100 classes, seed=42, steps=500) ──
+  step  100  loss=4.2886  elapsed=3.6s
+  step  200  loss=3.9352  elapsed=6.6s
+  step  300  loss=3.8273  elapsed=9.6s
+  step  400  loss=3.9101  elapsed=13.0s
+  step  500  loss=3.8346  elapsed=16.2s
+  Test accuracy = 12.25%
+
+============================================================
+SUMMARY — ablation-02 (CIFAR-100 vs CIFAR-10 comparison)
+============================================================
+  CIFAR-10  softmax-inner : 37.53%
+  CIFAR-10  linear-inner  : 37.68%
+  CIFAR-10  delta         : +0.15pp
+  CIFAR-100 softmax-inner : 11.80%
+  CIFAR-100 linear-inner  : 12.25%
+  CIFAR-100 delta         : +0.45pp
+  delta_change (C100−C10) : +0.30pp  (NOT worse on CIFAR-100)
+  init CE pass            : True
+
+Prediction assessment: NOT CONFIRMED: CIFAR-100 delta is not worse than CIFAR-10 delta.
+
+Wrote /workspace/results/ablation-02/RESULTS.json
+{
+  "status": "SUCCESS",
+  "scale": "probe",
+  "metrics": {
+    "cifar10_softmax_inner_acc_pct": 37.53,
+    "cifar10_linear_inner_acc_pct": 37.68,
+    "cifar10_delta_pp": 0.15,
+    "cifar100_softmax_inner_acc_pct": 11.8,
+    "cifar100_linear_inner_acc_pct": 12.25,
+    "cifar100_delta_pp": 0.45,
+    "delta_change_c100_minus_c10_pp": 0.3,
+    "prediction_confirmed": false,
+    "init_ce_cifar100": 4.6539,
+    "init_ce_pass": true,
+    "n_steps": 500,
+    "seed": 42,
+    "geometry": {
+      "n_inner": 4,
+      "d_inner": 24,
+      "softmax_cost_prop": 16,
+      "linear_kernel_cost_prop": 96,
+      "linear_vs_softmax_cost_ratio": 6.0,
+      "note": "n_inner=4 < d_inner=24: linear-attn kernel is 6x MORE expensive per head than softmax; study is expressivity-only, no FLOP claim."
+    },
+    "inner_attn_method": "ReLU-kernel linear attention (Performer-style phi(x)=ReLU(x)+eps)",
+    "outer_attn_method": "softmax (unchanged in both arms)"
+  },
+  "subject_executed": "TNT (Transformer-in-Transformer) on CIFAR-100. Arm A: softmax inner attention; Arm B: ReLU-kernel linear inner attention. Outer block: softmax in both arms. Config: img_size=32, patch_size=8, inner_stride=4, n_inner=4, d_inner=24, outer_dim=192, depth=6, outer_num_heads=3, inner_num_heads=4, num_classes=100, seed=42. Probe: 500 AdamW steps (lr=1e-3, wd=0.05). Direct contrast with increase_complexity-01 (same protocol on CIFAR-10).",
+  "notes": "CIFAR-10 delta (linear\u2212softmax): +0.15pp (from increase_complexity-01). CIFAR-100 delta (linear\u2212softmax): +0.45pp. delta_change (C100\u2212C10): +0.30pp. Prediction (NOT CONFIRMED: CIFAR-100 delta is not worse than CIFAR-10 delta.). Geometry: n_inner=4 < d_inner=24 \u2192 linear attn 6x MORE expensive per head; study is purely expressivity."
+}
