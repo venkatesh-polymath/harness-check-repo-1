@@ -1,0 +1,37 @@
+Device: cuda
+GPU: NVIDIA A10
+
+======================================================================
+GEOMETRY TABLE (pre-training gate, from study spec §H5)
+======================================================================
+  Image size       : 32×32 px
+  Outer patch size : 8×8 px → 16 outer tokens
+  Sub-patch size   : 4×4 px (inner_stride=4)
+  n_inner          : 4 sub-patch tokens per outer patch
+  d_inner          : 24 (inner attention head dim = 24/4 heads = 6)
+  Softmax attn cost (∝ n²)  : 16
+  Linear-attn cost (∝ n·d) : 96
+  Linear/Softmax ratio      : 6.0× MORE EXPENSIVE
+  → Efficiency claim REFUTED: linear-inner is not cheaper at this scale
+  → Study is EXPRESSIVITY-ONLY — does inner-block attention type matter?
+======================================================================
+
+======================================================================
+TNT Full Run — increase_complexity-03
+softmax-inner vs linear-inner | CIFAR-10 + CIFAR-100 | 3 seeds
+======================================================================
+
+======================================================================
+DATASET: CIFAR10
+======================================================================
+Loading cifar10 from HuggingFace...
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Generating train split:   0%|          | 0/50000 [00:00<?, ? examples/s]Generating train split:  31%|███▏      | 15700/50000 [00:00<00:00, 156506.11 examples/s]Generating train split:  86%|████████▌ | 43000/50000 [00:00<00:00, 224448.62 examples/s]Generating train split: 100%|██████████| 50000/50000 [00:00<00:00, 115744.15 examples/s]
+Generating test split:   0%|          | 0/10000 [00:00<?, ? examples/s]Generating test split: 100%|██████████| 10000/10000 [00:00<00:00, 263087.83 examples/s]
+
+[cifar10/softmax/seed0 (1/12)] Starting training (inner=softmax, classes=10, seed=0, epochs=100)
+/workspace/src/tnt_full_run.py:393: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler  = GradScaler()  # AMP
+/workspace/src/tnt_full_run.py:407: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast():
+[cifar10/softmax/seed0 (1/12)] Epoch  10/100 | lr=1.00e-03 | loss=1.2798 | test_acc=54.08% | best=54.08% | elapsed=132s

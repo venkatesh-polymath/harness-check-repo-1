@@ -1,10 +1,10 @@
-# EXPERIMENT BRIEF — round ablation-02 (probe)
+# EXPERIMENT BRIEF — round increase_complexity-03 (full)
 
 ## THIS ROUND (do exactly this)
-Ablation on the harder dataset — build on the committed TNT code + results/. Run the SAME comparison as increase_complexity-01 (softmax-inner baseline vs linear-inner method, n_inner=4/d_inner=24, matched setup) but on CIFAR-100 instead of CIFAR-10. Question: is the accuracy delta (linear - softmax) worse on CIFAR-100 than the +0.15pp seen on CIFAR-10? Report both top-1 accuracies and the delta_pp. Probe scale (short run). Read results/increase_complexity-01/ for the CIFAR-10 numbers to contrast.
+FULL confirmatory run — build on committed code/results. Run softmax-inner vs linear-inner (n_inner=4,d_inner=24) on BOTH CIFAR-10 and CIFAR-100, across seeds {0,1,2}, more steps than the probe (enough for stable acc). For each dataset report per-arm mean±std top-1 across the 3 seeds, the delta (linear-softmax) with a 95% CI, and state explicitly whether the delta is statistically indistinguishable from 0 (null) — i.e. does linear inner attention significantly change accuracy? Also restate the 6x per-head cost. This is the decisive experiment for the paper.
 
 Prior rounds' code and results are already committed under results/*/. Read them
-for context and build on them; write this round's outputs under results/ablation-02/.
+for context and build on them; write this round's outputs under results/increase_complexity-03/.
 
 ## Idea
 Linear Attention in TITN's Inner Block: Does Local-Feature Efficiency Sacrifice Structural Expressivity?
@@ -37,4 +37,4 @@ Sanity gates: fixed seed, verify loss at init, input-independent baseline, overf
 - baseline: TNT with softmax inner attention, no distillation, trained from scratch on CIFAR-10 across seeds {0, 1, 2}; four sanity checks must all pass before any ablation arm launches: (1) bit-identical per-step loss values across two independent process launches at the same seed, (2) mean initial cross-entropy ∈ [2.29, 2.32] ≈ ln(10), (3) test accuracy > 10% (above majority-class dummy baseline), (4) training loss on a fixed frozen batch of 32 images reaches < 0.01 within 300 gradient steps
 - eval contract: CIFAR-10 and CIFAR-100 top-1 test accuracy; each arm reported as mean ± std over 3 seeds; primary comparison per dataset: two-sided Welch's t-test (α=0.05, df via Welch–Satterthwaite) between softmax-inner and linear-inner arms; pre-registered directional prediction: accuracy gap (softmax_inner − linear_inner) is strictly larger on CIFAR-100 than on CIFAR-10; effect size reported as Cohen's d; minimum detectable effect at 80% power computed from baseline seed variance before unblinding ablation results
 
-Record everything under results/ablation-02/. Do not commit weights.
+Record everything under results/increase_complexity-03/. Do not commit weights.
