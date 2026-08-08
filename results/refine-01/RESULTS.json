@@ -1,0 +1,1261 @@
+{
+  "status": "SUCCESS",
+  "scale": "probe",
+  "metrics": {
+    "cross_site_data_obtained": true,
+    "dataset_source_url": "https://zenodo.org/records/21628834",
+    "dataset_doi": "10.5281/zenodo.21628834",
+    "dataset_author": "Hao WANG",
+    "dataset_name": "Blood_5",
+    "dataset_publication_date": "2026-07-27",
+    "dataset_confirmed_not_pbc": true,
+    "n_target_samples": 5175,
+    "target_image_dimensions": "150x150x3",
+    "target_classes": [
+      "basophil",
+      "eosinophil",
+      "lymphocyte",
+      "monocyte",
+      "neutrophil"
+    ],
+    "target_label_counts": {
+      "basophil": 132,
+      "eosinophil": 148,
+      "lymphocyte": 1241,
+      "monocyte": 642,
+      "neutrophil": 3012
+    },
+    "pbc_to_blood5_class_mapping": {
+      "blood5[0]=basophil": "pbc[3]",
+      "blood5[1]=eosinophil": "pbc[6]",
+      "blood5[2]=lymphocyte": "pbc[4]",
+      "blood5[3]=monocyte": "pbc[0]",
+      "blood5[4]=neutrophil": "pbc[2]"
+    },
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "per_seed": [
+      {
+        "seed": 0,
+        "training": {
+          "best_val_loss": 0.050703680907042664,
+          "epochs_run": 15,
+          "history": [
+            {
+              "epoch": 1,
+              "train_loss": 0.22784424508389986,
+              "val_loss": 0.09774330643852579,
+              "train_acc": 0.9291746801572037,
+              "val_acc": 0.9625146427176884
+            },
+            {
+              "epoch": 2,
+              "train_loss": 0.05634711482031398,
+              "val_loss": 0.09431429156870008,
+              "train_acc": 0.983359812693369,
+              "val_acc": 0.9664193674345959
+            },
+            {
+              "epoch": 3,
+              "train_loss": 0.03668807847404315,
+              "val_loss": 0.08195870489199059,
+              "train_acc": 0.9882933355631742,
+              "val_acc": 0.9683717297930496
+            },
+            {
+              "epoch": 4,
+              "train_loss": 0.02674539202659293,
+              "val_loss": 0.06779176885947305,
+              "train_acc": 0.9910527636089974,
+              "val_acc": 0.975400234283483
+            },
+            {
+              "epoch": 5,
+              "train_loss": 0.015621619830637715,
+              "val_loss": 0.054626359249495986,
+              "train_acc": 0.9950664771301948,
+              "val_acc": 0.9824287387739165
+            },
+            {
+              "epoch": 6,
+              "train_loss": 0.011984442217173171,
+              "val_loss": 0.05303443419618104,
+              "train_acc": 0.9969060958274103,
+              "val_acc": 0.9839906286606794
+            },
+            {
+              "epoch": 7,
+              "train_loss": 0.010207140723618564,
+              "val_loss": 0.06376975392423954,
+              "train_acc": 0.9971569529224852,
+              "val_acc": 0.9824287387739165
+            },
+            {
+              "epoch": 8,
+              "train_loss": 0.00578376571249875,
+              "val_loss": 0.0582513160920284,
+              "train_acc": 0.9986620954929342,
+              "val_acc": 0.9812573213588442
+            },
+            {
+              "epoch": 9,
+              "train_loss": 0.004131291333140876,
+              "val_loss": 0.05184890495206877,
+              "train_acc": 0.998912952588009,
+              "val_acc": 0.9847715736040609
+            },
+            {
+              "epoch": 10,
+              "train_loss": 0.0032187630996872683,
+              "val_loss": 0.05274502882727072,
+              "train_acc": 0.9991638096830838,
+              "val_acc": 0.9851620460757516
+            },
+            {
+              "epoch": 11,
+              "train_loss": 0.002167067294094616,
+              "val_loss": 0.057492464483621136,
+              "train_acc": 0.9994982858098503,
+              "val_acc": 0.9863334634908238
+            },
+            {
+              "epoch": 12,
+              "train_loss": 0.0019468323802320229,
+              "val_loss": 0.050703680907042664,
+              "train_acc": 0.9996655238732336,
+              "val_acc": 0.9867239359625146
+            },
+            {
+              "epoch": 13,
+              "train_loss": 0.0017238893762738002,
+              "val_loss": 0.05162789685390532,
+              "train_acc": 0.9997491429049251,
+              "val_acc": 0.9855525185474424
+            },
+            {
+              "epoch": 14,
+              "train_loss": 0.0016214123025896675,
+              "val_loss": 0.052130091368811894,
+              "train_acc": 0.9996655238732336,
+              "val_acc": 0.9847715736040609
+            },
+            {
+              "epoch": 15,
+              "train_loss": 0.0011524524019466257,
+              "val_loss": 0.051581442386428006,
+              "train_acc": 0.9997491429049251,
+              "val_acc": 0.9855525185474424
+            }
+          ]
+        },
+        "T_star": 1.3121235370635986,
+        "pbc_test": {
+          "acc": 0.9891135303265941,
+          "ece_15bin_no_T": 0.005477957184170118,
+          "ece_15bin_with_T": 0.003461160704284957
+        },
+        "blood5_no_T": {
+          "T_applied": 1.0,
+          "scenario_A": {
+            "acc": 0.02280193236714976,
+            "ece_15bin": 0.749794955380297,
+            "desc": "argmax PBC (0-7) vs Blood5 label (0-4): MISMATCHED"
+          },
+          "scenario_B": {
+            "acc": 0.035555555555555556,
+            "ece_15bin": 0.7370413321918912,
+            "desc": "argmax PBC (0-7) vs Blood5 label remapped to PBC idx: ALIGNED"
+          },
+          "scenario_C": {
+            "acc": 0.12541062801932368,
+            "ece_15bin": 0.7855359755967549,
+            "desc": "restricted 5-class renorm vs Blood5 label: PROPER"
+          },
+          "confusion_matrix": {
+            "rows": [
+              "basophil",
+              "eosinophil",
+              "lymphocyte",
+              "monocyte",
+              "neutrophil"
+            ],
+            "cols": [
+              "monocyte",
+              "ig",
+              "neutrophil",
+              "basophil",
+              "lymphocyte",
+              "erythroblast",
+              "eosinophil",
+              "platelet"
+            ],
+            "matrix": [
+              [
+                183,
+                459,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                1747,
+                1178,
+                1,
+                0,
+                0,
+                86,
+                0,
+                0
+              ],
+              [
+                22,
+                110,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                286,
+                750,
+                0,
+                0,
+                0,
+                205,
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        "blood5_with_T": {
+          "T_applied": 1.3121235370635986,
+          "scenario_A": {
+            "acc": 0.02280193236714976,
+            "ece_15bin": 0.6801506989474457,
+            "desc": "argmax PBC (0-7) vs Blood5 label (0-4): MISMATCHED"
+          },
+          "scenario_B": {
+            "acc": 0.035555555555555556,
+            "ece_15bin": 0.6673970757590401,
+            "desc": "argmax PBC (0-7) vs Blood5 label remapped to PBC idx: ALIGNED"
+          },
+          "scenario_C": {
+            "acc": 0.12541062801932368,
+            "ece_15bin": 0.7247979564482463,
+            "desc": "restricted 5-class renorm vs Blood5 label: PROPER"
+          },
+          "confusion_matrix": {
+            "rows": [
+              "basophil",
+              "eosinophil",
+              "lymphocyte",
+              "monocyte",
+              "neutrophil"
+            ],
+            "cols": [
+              "monocyte",
+              "ig",
+              "neutrophil",
+              "basophil",
+              "lymphocyte",
+              "erythroblast",
+              "eosinophil",
+              "platelet"
+            ],
+            "matrix": [
+              [
+                183,
+                459,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                1747,
+                1178,
+                1,
+                0,
+                0,
+                86,
+                0,
+                0
+              ],
+              [
+                22,
+                110,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                286,
+                750,
+                0,
+                0,
+                0,
+                205,
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        "blood5_per_class": {
+          "precision_C": {
+            "basophil": 0.0,
+            "eosinophil": 0.0,
+            "lymphocyte": 1.0,
+            "monocyte": 0.12402647975077882,
+            "neutrophil": 0.6666666666666666
+          },
+          "recall_C": {
+            "basophil": 0.0,
+            "eosinophil": 0.0,
+            "lymphocyte": 0.008058017727639,
+            "monocyte": 0.9922118380062306,
+            "neutrophil": 0.0006640106241699867
+          },
+          "cm_5x5_C": [
+            [
+              0,
+              0,
+              0,
+              132,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              148,
+              0
+            ],
+            [
+              0,
+              20,
+              10,
+              1210,
+              1
+            ],
+            [
+              0,
+              5,
+              0,
+              637,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              3009,
+              2
+            ]
+          ]
+        }
+      },
+      {
+        "seed": 1,
+        "training": {
+          "best_val_loss": 0.050031884571164816,
+          "epochs_run": 15,
+          "history": [
+            {
+              "epoch": 1,
+              "train_loss": 0.21928742924694714,
+              "val_loss": 0.17364165117682862,
+              "train_acc": 0.9332720127100929,
+              "val_acc": 0.9410386567746973
+            },
+            {
+              "epoch": 2,
+              "train_loss": 0.055954193889980124,
+              "val_loss": 0.07451385829669034,
+              "train_acc": 0.9817710510912283,
+              "val_acc": 0.9730573994533386
+            },
+            {
+              "epoch": 3,
+              "train_loss": 0.0415498098517068,
+              "val_loss": 0.08147992473397803,
+              "train_acc": 0.9868718120244168,
+              "val_acc": 0.9718859820382663
+            },
+            {
+              "epoch": 4,
+              "train_loss": 0.024807866161606767,
+              "val_loss": 0.05459697873895489,
+              "train_acc": 0.99222343005268,
+              "val_acc": 0.9804763764154627
+            },
+            {
+              "epoch": 5,
+              "train_loss": 0.016108574060602787,
+              "val_loss": 0.060265522281145636,
+              "train_acc": 0.9953173342252697,
+              "val_acc": 0.9800859039437719
+            },
+            {
+              "epoch": 6,
+              "train_loss": 0.01340519437724177,
+              "val_loss": 0.0561613580707819,
+              "train_acc": 0.9954009532569613,
+              "val_acc": 0.9824287387739165
+            },
+            {
+              "epoch": 7,
+              "train_loss": 0.00835793195594903,
+              "val_loss": 0.0634643228659584,
+              "train_acc": 0.9975750480809432,
+              "val_acc": 0.9824287387739165
+            },
+            {
+              "epoch": 8,
+              "train_loss": 0.005649292409943809,
+              "val_loss": 0.05330957580948083,
+              "train_acc": 0.998912952588009,
+              "val_acc": 0.9847715736040609
+            },
+            {
+              "epoch": 9,
+              "train_loss": 0.0035390226130781613,
+              "val_loss": 0.06882971141475558,
+              "train_acc": 0.9990801906513923,
+              "val_acc": 0.9820382663022257
+            },
+            {
+              "epoch": 10,
+              "train_loss": 0.002832782012475683,
+              "val_loss": 0.050031884571164816,
+              "train_acc": 0.999581904841542,
+              "val_acc": 0.9851620460757516
+            },
+            {
+              "epoch": 11,
+              "train_loss": 0.001643250293353688,
+              "val_loss": 0.05396756716780552,
+              "train_acc": 0.9998327619366167,
+              "val_acc": 0.9851620460757516
+            },
+            {
+              "epoch": 12,
+              "train_loss": 0.0015494067398600735,
+              "val_loss": 0.05350238172023967,
+              "train_acc": 0.9998327619366167,
+              "val_acc": 0.9863334634908238
+            },
+            {
+              "epoch": 13,
+              "train_loss": 0.0014765374553849706,
+              "val_loss": 0.05170127456725469,
+              "train_acc": 0.9997491429049251,
+              "val_acc": 0.9851620460757516
+            },
+            {
+              "epoch": 14,
+              "train_loss": 0.0012714560057985656,
+              "val_loss": 0.05264790233638022,
+              "train_acc": 0.9997491429049251,
+              "val_acc": 0.9836001561889887
+            },
+            {
+              "epoch": 15,
+              "train_loss": 0.0013266184274089697,
+              "val_loss": 0.05179850772459437,
+              "train_acc": 0.9996655238732336,
+              "val_acc": 0.9843811011323702
+            }
+          ]
+        },
+        "T_star": 1.3034565448760986,
+        "pbc_test": {
+          "acc": 0.9910575427682737,
+          "ece_15bin_no_T": 0.003409431914148584,
+          "ece_15bin_with_T": 0.0013415575676349984
+        },
+        "blood5_no_T": {
+          "T_applied": 1.0,
+          "scenario_A": {
+            "acc": 0.02280193236714976,
+            "ece_15bin": 0.7417189968899253,
+            "desc": "argmax PBC (0-7) vs Blood5 label (0-4): MISMATCHED"
+          },
+          "scenario_B": {
+            "acc": 0.025120772946859903,
+            "ece_15bin": 0.7394001563102152,
+            "desc": "argmax PBC (0-7) vs Blood5 label remapped to PBC idx: ALIGNED"
+          },
+          "scenario_C": {
+            "acc": 0.13159420289855073,
+            "ece_15bin": 0.6614905158851458,
+            "desc": "restricted 5-class renorm vs Blood5 label: PROPER"
+          },
+          "confusion_matrix": {
+            "rows": [
+              "basophil",
+              "eosinophil",
+              "lymphocyte",
+              "monocyte",
+              "neutrophil"
+            ],
+            "cols": [
+              "monocyte",
+              "ig",
+              "neutrophil",
+              "basophil",
+              "lymphocyte",
+              "erythroblast",
+              "eosinophil",
+              "platelet"
+            ],
+            "matrix": [
+              [
+                130,
+                421,
+                0,
+                0,
+                0,
+                91,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                400,
+                1447,
+                0,
+                0,
+                0,
+                1161,
+                4,
+                0
+              ],
+              [
+                7,
+                109,
+                0,
+                0,
+                0,
+                15,
+                1,
+                0
+              ],
+              [
+                74,
+                424,
+                0,
+                0,
+                0,
+                743,
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        "blood5_with_T": {
+          "T_applied": 1.3034565448760986,
+          "scenario_A": {
+            "acc": 0.02280193236714976,
+            "ece_15bin": 0.6718777272378764,
+            "desc": "argmax PBC (0-7) vs Blood5 label (0-4): MISMATCHED"
+          },
+          "scenario_B": {
+            "acc": 0.025120772946859903,
+            "ece_15bin": 0.6695588866581663,
+            "desc": "argmax PBC (0-7) vs Blood5 label remapped to PBC idx: ALIGNED"
+          },
+          "scenario_C": {
+            "acc": 0.13159420289855073,
+            "ece_15bin": 0.5834968408121579,
+            "desc": "restricted 5-class renorm vs Blood5 label: PROPER"
+          },
+          "confusion_matrix": {
+            "rows": [
+              "basophil",
+              "eosinophil",
+              "lymphocyte",
+              "monocyte",
+              "neutrophil"
+            ],
+            "cols": [
+              "monocyte",
+              "ig",
+              "neutrophil",
+              "basophil",
+              "lymphocyte",
+              "erythroblast",
+              "eosinophil",
+              "platelet"
+            ],
+            "matrix": [
+              [
+                130,
+                421,
+                0,
+                0,
+                0,
+                91,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                400,
+                1447,
+                0,
+                0,
+                0,
+                1161,
+                4,
+                0
+              ],
+              [
+                7,
+                109,
+                0,
+                0,
+                0,
+                15,
+                1,
+                0
+              ],
+              [
+                74,
+                424,
+                0,
+                0,
+                0,
+                743,
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        "blood5_per_class": {
+          "precision_C": {
+            "basophil": 0.0,
+            "eosinophil": 0.02247191011235955,
+            "lymphocyte": 0.9787234042553191,
+            "monocyte": 0.12961816305469556,
+            "neutrophil": 1.0
+          },
+          "recall_C": {
+            "basophil": 0.0,
+            "eosinophil": 0.04054054054054054,
+            "lymphocyte": 0.037066881547139406,
+            "monocyte": 0.9781931464174455,
+            "neutrophil": 0.00033200531208499334
+          },
+          "cm_5x5_C": [
+            [
+              0,
+              7,
+              0,
+              125,
+              0
+            ],
+            [
+              0,
+              6,
+              0,
+              142,
+              0
+            ],
+            [
+              2,
+              37,
+              46,
+              1156,
+              0
+            ],
+            [
+              0,
+              14,
+              0,
+              628,
+              0
+            ],
+            [
+              13,
+              203,
+              1,
+              2794,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "seed": 2,
+        "training": {
+          "best_val_loss": 0.052272095738779,
+          "epochs_run": 15,
+          "history": [
+            {
+              "epoch": 1,
+              "train_loss": 0.2267953586037347,
+              "val_loss": 0.08355184306602823,
+              "train_acc": 0.9308470607910361,
+              "val_acc": 0.9742288168684108
+            },
+            {
+              "epoch": 2,
+              "train_loss": 0.05974807187431081,
+              "val_loss": 0.10445386773630565,
+              "train_acc": 0.9806003846475457,
+              "val_acc": 0.9660288949629051
+            },
+            {
+              "epoch": 3,
+              "train_loss": 0.03431235828514554,
+              "val_loss": 0.08135908555209506,
+              "train_acc": 0.9892131449117819,
+              "val_acc": 0.9750097618117922
+            },
+            {
+              "epoch": 4,
+              "train_loss": 0.020144028460789318,
+              "val_loss": 0.08813903622483672,
+              "train_acc": 0.993728572623129,
+              "val_acc": 0.972276454509957
+            },
+            {
+              "epoch": 5,
+              "train_loss": 0.019328399926196005,
+              "val_loss": 0.05860564304359467,
+              "train_acc": 0.9933104774646709,
+              "val_acc": 0.9793049590003905
+            },
+            {
+              "epoch": 6,
+              "train_loss": 0.011684761118054707,
+              "val_loss": 0.0713617464204604,
+              "train_acc": 0.9961535245421858,
+              "val_acc": 0.9777430691136275
+            },
+            {
+              "epoch": 7,
+              "train_loss": 0.010531419904609606,
+              "val_loss": 0.061230890863758776,
+              "train_acc": 0.9969060958274103,
+              "val_acc": 0.9832096837172979
+            },
+            {
+              "epoch": 8,
+              "train_loss": 0.006344007616489627,
+              "val_loss": 0.05474377992018281,
+              "train_acc": 0.9983276193661678,
+              "val_acc": 0.9839906286606794
+            },
+            {
+              "epoch": 9,
+              "train_loss": 0.003253523211093374,
+              "val_loss": 0.06922439932333198,
+              "train_acc": 0.9994146667781587,
+              "val_acc": 0.9828192112456072
+            },
+            {
+              "epoch": 10,
+              "train_loss": 0.0038886521855497395,
+              "val_loss": 0.055097913719979165,
+              "train_acc": 0.9989965716197007,
+              "val_acc": 0.9843811011323702
+            },
+            {
+              "epoch": 11,
+              "train_loss": 0.002570200504999736,
+              "val_loss": 0.052272095738779,
+              "train_acc": 0.9997491429049251,
+              "val_acc": 0.9859429910191332
+            },
+            {
+              "epoch": 12,
+              "train_loss": 0.0011864413179104739,
+              "val_loss": 0.05459061237855223,
+              "train_acc": 0.9999163809683084,
+              "val_acc": 0.9855525185474424
+            },
+            {
+              "epoch": 13,
+              "train_loss": 0.0015414384114364925,
+              "val_loss": 0.054739528421041,
+              "train_acc": 0.999581904841542,
+              "val_acc": 0.9863334634908238
+            },
+            {
+              "epoch": 14,
+              "train_loss": 0.0014125693925426722,
+              "val_loss": 0.05363755563470255,
+              "train_acc": 0.999581904841542,
+              "val_acc": 0.9871144084342054
+            },
+            {
+              "epoch": 15,
+              "train_loss": 0.0010880043491633853,
+              "val_loss": 0.05374178140975324,
+              "train_acc": 0.9997491429049251,
+              "val_acc": 0.9871144084342054
+            }
+          ]
+        },
+        "T_star": 1.3164615631103516,
+        "pbc_test": {
+          "acc": 0.9906687402799378,
+          "ece_15bin_no_T": 0.003477972922021088,
+          "ece_15bin_with_T": 0.0016559727408837766
+        },
+        "blood5_no_T": {
+          "T_applied": 1.0,
+          "scenario_A": {
+            "acc": 0.022222222222222223,
+            "ece_15bin": 0.745780164665646,
+            "desc": "argmax PBC (0-7) vs Blood5 label (0-4): MISMATCHED"
+          },
+          "scenario_B": {
+            "acc": 0.014106280193236715,
+            "ece_15bin": 0.7538961066946315,
+            "desc": "argmax PBC (0-7) vs Blood5 label remapped to PBC idx: ALIGNED"
+          },
+          "scenario_C": {
+            "acc": 0.12811594202898552,
+            "ece_15bin": 0.6628572424771128,
+            "desc": "restricted 5-class renorm vs Blood5 label: PROPER"
+          },
+          "confusion_matrix": {
+            "rows": [
+              "basophil",
+              "eosinophil",
+              "lymphocyte",
+              "monocyte",
+              "neutrophil"
+            ],
+            "cols": [
+              "monocyte",
+              "ig",
+              "neutrophil",
+              "basophil",
+              "lymphocyte",
+              "erythroblast",
+              "eosinophil",
+              "platelet"
+            ],
+            "matrix": [
+              [
+                70,
+                530,
+                0,
+                0,
+                0,
+                42,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                267,
+                1750,
+                3,
+                0,
+                0,
+                991,
+                0,
+                1
+              ],
+              [
+                3,
+                101,
+                0,
+                0,
+                0,
+                26,
+                0,
+                2
+              ],
+              [
+                59,
+                624,
+                0,
+                0,
+                0,
+                558,
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        "blood5_with_T": {
+          "T_applied": 1.3164615631103516,
+          "scenario_A": {
+            "acc": 0.022222222222222223,
+            "ece_15bin": 0.6674004760053422,
+            "desc": "argmax PBC (0-7) vs Blood5 label (0-4): MISMATCHED"
+          },
+          "scenario_B": {
+            "acc": 0.014106280193236715,
+            "ece_15bin": 0.6755164180343278,
+            "desc": "argmax PBC (0-7) vs Blood5 label remapped to PBC idx: ALIGNED"
+          },
+          "scenario_C": {
+            "acc": 0.12811594202898552,
+            "ece_15bin": 0.5703228176158407,
+            "desc": "restricted 5-class renorm vs Blood5 label: PROPER"
+          },
+          "confusion_matrix": {
+            "rows": [
+              "basophil",
+              "eosinophil",
+              "lymphocyte",
+              "monocyte",
+              "neutrophil"
+            ],
+            "cols": [
+              "monocyte",
+              "ig",
+              "neutrophil",
+              "basophil",
+              "lymphocyte",
+              "erythroblast",
+              "eosinophil",
+              "platelet"
+            ],
+            "matrix": [
+              [
+                70,
+                530,
+                0,
+                0,
+                0,
+                42,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                267,
+                1750,
+                3,
+                0,
+                0,
+                991,
+                0,
+                1
+              ],
+              [
+                3,
+                101,
+                0,
+                0,
+                0,
+                26,
+                0,
+                2
+              ],
+              [
+                59,
+                624,
+                0,
+                0,
+                0,
+                558,
+                0,
+                0
+              ]
+            ]
+          }
+        },
+        "blood5_per_class": {
+          "precision_C": {
+            "basophil": 0.2,
+            "eosinophil": 0.0,
+            "lymphocyte": 0.4117647058823529,
+            "monocyte": 0.12593320235756386,
+            "neutrophil": 0.8125
+          },
+          "recall_C": {
+            "basophil": 0.015151515151515152,
+            "eosinophil": 0.0,
+            "lymphocyte": 0.0056406124093473006,
+            "monocyte": 0.9984423676012462,
+            "neutrophil": 0.004316069057104913
+          },
+          "cm_5x5_C": [
+            [
+              2,
+              0,
+              0,
+              128,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              147,
+              1
+            ],
+            [
+              1,
+              20,
+              7,
+              1213,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              641,
+              0
+            ],
+            [
+              7,
+              21,
+              10,
+              2961,
+              13
+            ]
+          ]
+        }
+      }
+    ],
+    "aggregate": {
+      "pbc_test.acc": {
+        "mean": 0.9902799377916018,
+        "std": 0.0008399093699336252,
+        "per_seed": [
+          0.9891135303265941,
+          0.9910575427682737,
+          0.9906687402799378
+        ]
+      },
+      "pbc_test.ece_15bin_no_T": {
+        "mean": 0.004121787340113263,
+        "std": 0.0009593650510926274,
+        "per_seed": [
+          0.005477957184170118,
+          0.003409431914148584,
+          0.003477972922021088
+        ]
+      },
+      "pbc_test.ece_15bin_with_T": {
+        "mean": 0.0021528970042679106,
+        "std": 0.0009339449151775437,
+        "per_seed": [
+          0.003461160704284957,
+          0.0013415575676349984,
+          0.0016559727408837766
+        ]
+      },
+      "T_star": {
+        "mean": 1.3106805483500164,
+        "std": 0.005406433645140287,
+        "per_seed": [
+          1.3121235370635986,
+          1.3034565448760986,
+          1.3164615631103516
+        ]
+      },
+      "blood5.scenario_A.acc_noT": {
+        "mean": 0.022608695652173914,
+        "std": 0.0002732779830672646,
+        "per_seed": [
+          0.02280193236714976,
+          0.02280193236714976,
+          0.022222222222222223
+        ]
+      },
+      "blood5.scenario_A.ece_15bin_noT": {
+        "mean": 0.7457647056452893,
+        "std": 0.0032970143686406545,
+        "per_seed": [
+          0.749794955380297,
+          0.7417189968899253,
+          0.745780164665646
+        ]
+      },
+      "blood5.scenario_A.acc_T": {
+        "mean": 0.022608695652173914,
+        "std": 0.0002732779830672646,
+        "per_seed": [
+          0.02280193236714976,
+          0.02280193236714976,
+          0.022222222222222223
+        ]
+      },
+      "blood5.scenario_A.ece_15bin_T": {
+        "mean": 0.6731429673968882,
+        "std": 0.005281582513055312,
+        "per_seed": [
+          0.6801506989474457,
+          0.6718777272378764,
+          0.6674004760053422
+        ]
+      },
+      "blood5.scenario_B.acc_noT": {
+        "mean": 0.024927536231884057,
+        "std": 0.008757695995072201,
+        "per_seed": [
+          0.035555555555555556,
+          0.025120772946859903,
+          0.014106280193236715
+        ]
+      },
+      "blood5.scenario_B.ece_15bin_noT": {
+        "mean": 0.7434458650655792,
+        "std": 0.007451920351358145,
+        "per_seed": [
+          0.7370413321918912,
+          0.7394001563102152,
+          0.7538961066946315
+        ]
+      },
+      "blood5.scenario_B.acc_T": {
+        "mean": 0.024927536231884057,
+        "std": 0.008757695995072201,
+        "per_seed": [
+          0.035555555555555556,
+          0.025120772946859903,
+          0.014106280193236715
+        ]
+      },
+      "blood5.scenario_B.ece_15bin_T": {
+        "mean": 0.6708241268171781,
+        "std": 0.003433322418183378,
+        "per_seed": [
+          0.6673970757590401,
+          0.6695588866581663,
+          0.6755164180343278
+        ]
+      },
+      "blood5.scenario_C.acc_noT": {
+        "mean": 0.12837359098228665,
+        "std": 0.002530999382207857,
+        "per_seed": [
+          0.12541062801932368,
+          0.13159420289855073,
+          0.12811594202898552
+        ]
+      },
+      "blood5.scenario_C.ece_15bin_noT": {
+        "mean": 0.7032945779863379,
+        "std": 0.05815612662526242,
+        "per_seed": [
+          0.7855359755967549,
+          0.6614905158851458,
+          0.6628572424771128
+        ]
+      },
+      "blood5.scenario_C.acc_T": {
+        "mean": 0.12837359098228665,
+        "std": 0.002530999382207857,
+        "per_seed": [
+          0.12541062801932368,
+          0.13159420289855073,
+          0.12811594202898552
+        ]
+      },
+      "blood5.scenario_C.ece_15bin_T": {
+        "mean": 0.626205871625415,
+        "std": 0.0699222812083938,
+        "per_seed": [
+          0.7247979564482463,
+          0.5834968408121579,
+          0.5703228176158407
+        ]
+      }
+    },
+    "summary": {
+      "pbc_acc_mean": 0.9902799377916018,
+      "pbc_acc_std": 0.0008399093699336252,
+      "pbc_ece_noT_mean": 0.004121787340113263,
+      "pbc_ece_T_mean": 0.0021528970042679106,
+      "T_star_mean": 1.3106805483500164,
+      "T_star_std": 0.005406433645140287,
+      "blood5_scenC_acc_mean": 0.12837359098228665,
+      "blood5_scenC_acc_std": 0.002530999382207857,
+      "blood5_scenC_ece_noT_mean": 0.7032945779863379,
+      "blood5_scenC_ece_T_mean": 0.626205871625415,
+      "blood5_scenA_acc_mean": 0.022608695652173914,
+      "blood5_scenB_acc_mean": 0.024927536231884057,
+      "in_domain_vs_cross_site_ece_ratio": 170.62854532592453,
+      "ece_reduction_T_source_domain_pct": 47.76787770402655,
+      "ece_reduction_T_cross_site_pct": 10.961083559273565
+    }
+  },
+  "subject_executed": "ResNet-18 (ImageNet-pretrained) trained on Barcelona PBC 8-class; evaluated on Blood_5 cross-site target (Hao WANG, Zenodo doi:10.5281/zenodo.21628834); 3 seeds, 3 label-alignment scenarios, temperature scaling; genuine cross-site evaluation (different lab, different acquisition)",
+  "notes": "Blood_5 from Zenodo 21628834 (doi:10.5281/zenodo.21628834), self-collected by Hao WANG (NOT Barcelona PBC/Acevedo et al.). Downloaded test_batch (5175 images, 150x150x3) via ZIP range-request HTTP (254MB compressed). Key finding: PBC model maps ~95% of Blood5 images to PBC monocyte class, giving 12.8% cross-site accuracy (only true monocytes correct) vs 99.0% in-domain. Severe cross-site overconfidence: ECE=70.3% on Blood5 vs 0.41% in-domain. Source-fit T=1.311 reduces in-domain ECE by 46% (0.41%->0.22%) but only 11% cross-site (70.3%->62.6%): T does NOT repair cross-site miscalibration. CAVEAT: 5x8 confusion matrix row labels in blood5_no_T/with_T are mislabeled (rows index by PBC space 0-7 but labeled with Blood5 class names); 5x5 cm_5x5_C and all accuracy/ECE values are correct."
+}

@@ -1,10 +1,10 @@
-# EXPERIMENT BRIEF — round baseline-00 (probe)
+# EXPERIMENT BRIEF — round refine-01 (probe)
 
 ## THIS ROUND (do exactly this)
-AUDIT FIRST, DO NOT MEASURE CALIBRATION YET. The round-2 grounding probe measured cross-site uncalibrated ECE=84.86% on Raabin-WBC vs 4.84% in-domain on Barcelona PBC. Before any cross-site calibration claim, establish whether this is real miscalibration or a LABEL-SPACE MISMATCH. Do exactly this: (1) enumerate the class vocabularies of Barcelona PBC (8 WBC classes) and Raabin-WBC, and state the explicit mapping used, naming any class present in one and absent in the other; (2) train ResNet-18 on PBC as before and emit the full CONFUSION MATRIX on the Raabin target set, not just aggregate metrics; (3) report per-class precision/recall and the predicted-class histogram on target; (4) report target accuracy and ECE restricted to ONLY the classes that exist in BOTH datasets under a verified 1-to-1 mapping. If the 84.86% ECE collapses once the label space is aligned, that is the answer and you must say so plainly. Emit all of this in RESULTS.json metrics.
+CRITICAL: the previous run silently substituted in-domain PBC data when the cross-site download failed, and reported it as target-domain results. That must not happen again. Your job is to obtain a GENUINE second-site dataset and measure real cross-site transfer. (1) Acquire a true cross-site WBC dataset - try Raabin-WBC from its official source (raabindata.com direct download) and any HuggingFace mirror; if that fails try Chula-WBC / LISC / any public WBC set from a DIFFERENT lab than Barcelona PBC. VERIFY provenance by printing dataset source URL, sample count, and image dimensions, and confirm it is NOT PBC. (2) If NO genuine cross-site dataset can be obtained, set status=FAILED with metrics.cross_site_data_obtained=false and STOP - do NOT substitute in-domain data, do NOT synthesise a proxy, do NOT report in-domain numbers as cross-site. A clean FAILED is the correct outcome in that case. (3) If obtained: train ResNet-18 on PBC (3 seeds), then for EACH seed report on the genuine target set - accuracy, ECE-15, confusion matrix, and the same three label-alignment scenarios (mismatched indices / aligned / restricted-to-shared-classes-renormalised). Also fit temperature T on the PBC val split and report target ECE with and without that source-fit T. (4) Emit metrics.cross_site_data_obtained (bool), metrics.dataset_source_url, metrics.n_target_samples and per-seed values for everything.
 
 Prior rounds' code and results are already committed under results/*/. Read them
-for context and build on them; write this round's outputs under results/baseline-00/.
+for context and build on them; write this round's outputs under results/refine-01/.
 
 ## Idea
 Source-Fit Temperature Scaling Under Cross-Site Acquisition Shift in Blood-Smear Classification
@@ -45,4 +45,4 @@ Sanity gates: fixed seed, verify loss at init, input-independent baseline, overf
 - refutes the hypothesis if: 95% CI on mean D includes 0 across 8 seeds
 - smallest effect worth caring about (SESOI): 1 pp absolute in D (below 15-bin ECE quantisation noise at N=500)
 
-Record everything under results/baseline-00/. Do not commit weights.
+Record everything under results/refine-01/. Do not commit weights.
