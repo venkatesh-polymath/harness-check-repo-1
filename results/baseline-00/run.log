@@ -1,0 +1,101 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Device: cuda
+
+=== CLASS VOCABULARY AUDIT ===
+PBC classes (8): ['monocyte', 'ig', 'neutrophil', 'basophil', 'lymphocyte', 'erythroblast', 'eosinophil', 'platelet']
+Raabin classes (5): ['basophil', 'eosinophil', 'lymphocyte', 'monocyte', 'neutrophil']
+PBC-only (no Raabin counterpart): ['ig', 'erythroblast', 'platelet']
+Raabin-only (no PBC counterpart): (none)
+Shared classes (1-to-1): ['basophil', 'eosinophil', 'lymphocyte', 'monocyte', 'neutrophil']
+
+Mapping Raabin idx → PBC idx:
+  Raabin[0]=basophil → PBC[3]=basophil
+  Raabin[1]=eosinophil → PBC[6]=eosinophil
+  Raabin[2]=lymphocyte → PBC[4]=lymphocyte
+  Raabin[3]=monocyte → PBC[0]=monocyte
+  Raabin[4]=neutrophil → PBC[2]=neutrophil
+
+Loading Barcelona PBC dataset ...
+  Total images: 17092 | classes: ['monocyte', 'ig', 'neutrophil', 'basophil', 'lymphocyte', 'erythroblast', 'eosinophil', 'platelet']
+  Loaded in 1.8s
+
+Split sizes  train=11959  val=2561  test=2572
+
+Building DataLoaders ...
+Downloading: "https://download.pytorch.org/models/resnet18-f37072fd.pth" to /root/.cache/torch/hub/checkpoints/resnet18-f37072fd.pth
+  0%|          | 0.00/44.7M [00:00<?, ?B/s] 15%|█▍        | 6.62M/44.7M [00:00<00:00, 69.4MB/s] 39%|███▊      | 17.2M/44.7M [00:00<00:00, 93.7MB/s] 64%|██████▎   | 28.4M/44.7M [00:00<00:00, 104MB/s]  88%|████████▊ | 39.2M/44.7M [00:00<00:00, 108MB/s]100%|██████████| 44.7M/44.7M [00:00<00:00, 102MB/s]
+
+Training ResNet-18 on PBC (8 classes), 10 epochs ...
+  Epoch  1/10  train_loss=0.2282 train_acc=0.930  val_loss=0.0953 val_acc=0.970
+  Epoch  2/10  train_loss=0.0552 train_acc=0.982  val_loss=0.0866 val_acc=0.972
+  Epoch  3/10  train_loss=0.0358 train_acc=0.989  val_loss=0.0647 val_acc=0.978
+  Epoch  4/10  train_loss=0.0221 train_acc=0.993  val_loss=0.0689 val_acc=0.978
+  Epoch  5/10  train_loss=0.0145 train_acc=0.996  val_loss=0.0754 val_acc=0.977
+  Epoch  6/10  train_loss=0.0111 train_acc=0.997  val_loss=0.0525 val_acc=0.984
+  Epoch  7/10  train_loss=0.0045 train_acc=0.999  val_loss=0.0523 val_acc=0.984
+  Epoch  8/10  train_loss=0.0034 train_acc=0.999  val_loss=0.0572 val_acc=0.983
+  Epoch  9/10  train_loss=0.0030 train_acc=0.999  val_loss=0.0516 val_acc=0.984
+  Epoch 10/10  train_loss=0.0024 train_acc=1.000  val_loss=0.0510 val_acc=0.985
+
+Best val loss: 0.0510 | checkpoint: /workspace/_weights/resnet18_pbc_baseline00.pt
+
+=== EVALUATION ===
+
+In-domain (PBC test, 8-class): acc=0.9907  ECE=0.0031
+
+Target set (5 shared classes, simulated): N=1550
+
+SCENARIO A - Mismatched (argmax-PBC-idx vs Raabin-idx):
+  acc=0.0000  ECE=0.9949
+  (Expected: LOW accuracy, HIGH ECE — label-index mismatch, not a calibration problem)
+
+SCENARIO B - Aligned (argmax-PBC-idx vs PBC-idx):
+  acc=0.9923  ECE=0.0029
+  (Expected: High accuracy, low ECE — same-site, same label space)
+
+SCENARIO C - Restricted 5-class (renorm, proper mapping):
+  acc=0.9994  ECE=0.0008
+  (Expected: High accuracy, low ECE — proper label alignment)
+
+=== CONFUSION MATRIX (true 5-class × pred 8-class) ===
+Row = True class (PBC), Col = Predicted class (PBC)
+Only rows for shared classes shown
+
+True \ Pred    monocy      ig  neutro  basoph  lympho  erythr  eosino  platel
+-----------------------------------------------------------------------------
+basoph(PBC3)        0       1       0     183       0       0       0       0
+eosino(PBC6)        0       0       0       0       0       0     469       0
+lympho(PBC4)        0       0       0       0     183       0       0       0
+monocy(PBC0)      214       0       0       0       0       0       0       0
+neutro(PBC2)        1      10     489       0       0       0       0       0
+
+=== PER-CLASS PRECISION/RECALL (on shared 5-class target) ===
+  basophil     prec=1.000  recall=0.995  n_true=184
+  eosinophil   prec=1.000  recall=1.000  n_true=469
+  lymphocyte   prec=1.000  recall=1.000  n_true=183
+  monocyte     prec=0.995  recall=1.000  n_true=214
+  neutrophil   prec=1.000  recall=0.978  n_true=500
+
+=== PREDICTED-CLASS HISTOGRAM (on target, raw 8-class argmax) ===
+  [0] monocyte       215 ##############
+  [1] ig              11  *** PBC-ONLY (not in Raabin)
+  [2] neutrophil     489 ################################
+  [3] basophil       183 ############
+  [4] lymphocyte     183 ############
+  [5] erythroblast     0  *** PBC-ONLY (not in Raabin)
+  [6] eosinophil     469 ###############################
+  [7] platelet         0  *** PBC-ONLY (not in Raabin)
+
+=== SUMMARY ===
+In-domain PBC (8-class):          acc=0.9907  ECE=0.0031
+Scenario A - Mismatched indices:  acc=0.0000  ECE=0.9949
+Scenario B - Aligned (same space):acc=0.9923  ECE=0.0029
+Scenario C - Restricted 5-class:  acc=0.9994  ECE=0.0008
+
+Fraction of target preds on PBC-only classes: 0.0071
+
+Files written:
+  /workspace/results/baseline-00/LOG.md
+  /workspace/results/baseline-00/RESULTS.json
+
+Done!

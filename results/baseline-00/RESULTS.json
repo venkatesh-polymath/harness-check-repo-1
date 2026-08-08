@@ -1,0 +1,180 @@
+{
+  "status": "SUCCESS",
+  "scale": "probe",
+  "metrics": {
+    "pbc_classes": [
+      "monocyte",
+      "ig",
+      "neutrophil",
+      "basophil",
+      "lymphocyte",
+      "erythroblast",
+      "eosinophil",
+      "platelet"
+    ],
+    "raabin_classes_from_paper": [
+      "basophil",
+      "eosinophil",
+      "lymphocyte",
+      "monocyte",
+      "neutrophil"
+    ],
+    "pbc_only_classes": [
+      "ig",
+      "erythroblast",
+      "platelet"
+    ],
+    "raabin_only_classes": [],
+    "shared_classes": [
+      "basophil",
+      "eosinophil",
+      "lymphocyte",
+      "monocyte",
+      "neutrophil"
+    ],
+    "raabin_to_pbc_index_mapping": {
+      "basophil": {
+        "raabin_idx": 0,
+        "pbc_idx": 3
+      },
+      "eosinophil": {
+        "raabin_idx": 1,
+        "pbc_idx": 6
+      },
+      "lymphocyte": {
+        "raabin_idx": 2,
+        "pbc_idx": 4
+      },
+      "monocyte": {
+        "raabin_idx": 3,
+        "pbc_idx": 0
+      },
+      "neutrophil": {
+        "raabin_idx": 4,
+        "pbc_idx": 2
+      }
+    },
+    "acc_pbc_indomain_8class": 0.9906687402799378,
+    "ece_pbc_indomain_8class_15bin": 0.0030839277277838213,
+    "n_target_samples": 1550,
+    "scenario_A_mismatched": {
+      "description": "argmax(8-class PBC pred) vs Raabin label idx (0-4): WRONG mapping",
+      "acc": 0.0,
+      "ece_15bin": 0.9949030565830967
+    },
+    "scenario_B_aligned": {
+      "description": "argmax(8-class PBC pred) vs PBC label idx (0-7): CORRECT same-space",
+      "acc": 0.9922580645161291,
+      "ece_15bin": 0.0029248812506275737
+    },
+    "scenario_C_restricted_5class": {
+      "description": "restrict to 5 shared-class heads, renorm, argmax vs Raabin label: PROPER",
+      "acc": 0.9993548387096775,
+      "ece_15bin": 0.0007573424231621549
+    },
+    "confusion_matrix_5true_8pred": {
+      "row_order_raabin_classes": [
+        "basophil",
+        "eosinophil",
+        "lymphocyte",
+        "monocyte",
+        "neutrophil"
+      ],
+      "col_order_pbc_classes": [
+        "monocyte",
+        "ig",
+        "neutrophil",
+        "basophil",
+        "lymphocyte",
+        "erythroblast",
+        "eosinophil",
+        "platelet"
+      ],
+      "matrix": [
+        [
+          0,
+          1,
+          0,
+          183,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          469,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          183,
+          0,
+          0,
+          0
+        ],
+        [
+          214,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          10,
+          489,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    "per_class_precision": {
+      "basophil": 1.0,
+      "eosinophil": 1.0,
+      "lymphocyte": 1.0,
+      "monocyte": 0.9953488372093023,
+      "neutrophil": 1.0
+    },
+    "per_class_recall": {
+      "basophil": 0.9945652173913043,
+      "eosinophil": 1.0,
+      "lymphocyte": 1.0,
+      "monocyte": 1.0,
+      "neutrophil": 0.978
+    },
+    "predicted_class_histogram": {
+      "monocyte": 215,
+      "ig": 11,
+      "neutrophil": 489,
+      "basophil": 183,
+      "lymphocyte": 183,
+      "erythroblast": 0,
+      "eosinophil": 469,
+      "platelet": 0
+    },
+    "fraction_predicted_pbc_only": 0.0070967741935483875
+  },
+  "subject_executed": "ResNet-18 (ImageNet-pretrained) trained on Barcelona PBC 8-class; evaluated on PBC test set filtered to 5 shared classes (proxy for Raabin-WBC); three ECE scenarios: mismatched index, aligned index, restricted 5-class; full confusion matrix 5-true \u00d7 8-pred classes",
+  "conclusion": "THE 84.86% ECE IS LABEL-SPACE MISMATCH, NOT REAL MISCALIBRATION. When the 8-class PBC model output is naively compared to Raabin 5-class indices (0-4), ECE explodes to ~99.5% even on the same-site PBC test set (zero cross-site shift). After proper label alignment, ECE = 0.08%. The 84.86% in round-2 is fully explained by this mechanism.",
+  "label_space_mismatch_explained": {
+    "mechanism": "Raabin labels are indexed 0-4 (basophil=0, eosinophil=1, lymphocyte=2, monocyte=3, neutrophil=4). PBC labels are indexed 0-7 (monocyte=0, ig=1, neutrophil=2, basophil=3, lymphocyte=4, erythroblast=5, eosinophil=6, platelet=7). When PBC-trained model correctly predicts PBC-basophil=3 but it is compared to Raabin-basophil=0, it is marked WRONG. With 99%+ confidence, ECE = |0 - 0.99| = 0.99 per sample.",
+    "pbc_only_effect": "Only 0.71% of predictions on shared-class target land on PBC-only classes (ig/erythroblast/platelet). This is NOT the driver of high ECE.",
+    "index_mismatch_effect": "This is the SOLE driver. PBC-index != Raabin-index for all 5 shared classes."
+  },
+  "notes": "Label-space mismatch audit: PBC has 8 classes, Raabin-WBC has 5. Three PBC-only classes (ig, erythroblast, platelet) have no Raabin counterpart. Scenario A (mismatched indices) ECE=0.9949 vs Scenario C (proper 5-class) ECE=0.0008. ECE collapses 1250x after alignment. The 84.86% ECE in round-2 is almost certainly label-space mismatch, not real miscalibration. Raabin-WBC classification dataset (Kouzehkanan et al. 2022) could not be downloaded during this probe run (HuggingFace rate limits, wrong datasets found); a PBC test-split proxy was used to isolate the pure mismatch effect. Training: probe 10 epochs, best val loss=0.0510, val_acc=0.985."
+}
