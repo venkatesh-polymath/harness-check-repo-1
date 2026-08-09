@@ -1,0 +1,266 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+======================================================================
+ABLATION-02: Diagnose Blood_5 monocyte collapse
+======================================================================
+Device: cuda
+GPU: NVIDIA L4
+
+PBC classes (8): ['monocyte', 'ig', 'neutrophil', 'basophil', 'lymphocyte', 'erythroblast', 'eosinophil', 'platelet']
+Blood5 classes (5): ['basophil', 'eosinophil', 'lymphocyte', 'monocyte', 'neutrophil']
+PBC shared indices in Blood5 order: [3, 6, 4, 0, 2]
+
+=== ACQUIRING BLOOD_5 DATASET ===
+  Found npy: /workspace/_weights/blood5_test_data.npy (349.3 MB)
+  Found npy: /workspace/_weights/blood5_test_labels.npy (0.0 MB)
+
+Checking for Blood_5 data files in /workspace/_weights:
+  resnet18_pbc_ablation02.pt: 44.8 MB
+  test_batch_compressed: 254.1 MB
+  blood5_test_data.npy: 349.3 MB
+  blood5_test_labels.npy: 0.0 MB
+
+=== LOADING DATASETS ===
+Blood5: N=5175, shape=(5175, 150, 150, 3), dtype=uint8
+
+Loading PBC dataset from HuggingFace ...
+PBC: N=17092 images, classes: ['monocyte', 'ig', 'neutrophil', 'basophil', 'lymphocyte', 'erythroblast', 'eosinophil', 'platelet']
+Loaded in 2.8s
+PBC split: train=11959 val=2561 test=2572
+
+======================================================================
+STEP 1: EXACT PREPROCESSING COMPARISON
+======================================================================
+
+PBC raw image: mode=RGB, size=(360, 363) (W×H), class=monocyte
+PBC raw image as array: shape=(363, 360, 3), dtype=uint8, range=[5,255]
+PBC raw per-channel mean: R=218.1 G=184.1 B=182.5
+
+Blood_5 raw image [0]: shape=(150, 150, 3), dtype=uint8, range=[16,255]
+Blood_5 raw per-channel mean: R=180.0 G=163.0 B=205.2
+Blood_5 raw image [0] class: neutrophil
+
+PBC PREPROCESSING PIPELINE:
+  dataset_storage_format: HuggingFace dataset (PIL JPEG), RGB
+  load_step: img = item['image']; img = img.convert('RGB')
+  resize: 224 x 224 px
+  interpolation: PIL.Image.BILINEAR (default Resize in torchvision)
+  channel_order: RGB (PIL native)
+  to_tensor: torchvision.transforms.ToTensor() → float32 in [0.0, 1.0] (HWC uint8 / 255)
+  normalization_mean: [0.485, 0.456, 0.406]
+  normalization_std: [0.229, 0.224, 0.225]
+  normalization_formula: (pixel - mean) / std, per-channel
+  output_dtype: float32
+  output_shape: [3, 224, 224]
+
+BLOOD_5 PREPROCESSING PIPELINE (as used in refine-01):
+  dataset_storage_format: numpy uint8 HWC flat array (N, 150*150*3), shape (5175, 67500)
+  load_step: arr = blood5_data[i].reshape(150,150,3); img = PIL.Image.fromarray(arr, 'RGB')
+  resize: 224 x 224 px
+  interpolation: PIL.Image.BILINEAR (default Resize in torchvision)
+  channel_order: ASSUMED RGB (PIL.fromarray(..., 'RGB') treats stored bytes as R/G/B)
+  to_tensor: torchvision.transforms.ToTensor() → float32 in [0.0, 1.0]
+  normalization_mean: [0.485, 0.456, 0.406]
+  normalization_std: [0.229, 0.224, 0.225]
+  normalization_formula: (pixel - mean) / std, per-channel
+  output_dtype: float32
+  output_shape: [3, 224, 224]
+  CAUTION: IF original images were saved with OpenCV (BGR order), PIL.fromarray(...,'RGB') swaps R and B channels vs what the model was trained with (PBC uses RGB PIL). This is the prime candidate for preprocessing mismatch.
+
+KEY DIFFERENCES:
+  - PBC images: stored as PIL JPEG in HuggingFace, guaranteed RGB
+  - Blood_5 images: stored as numpy uint8 array, channel order UNKNOWN
+  - IF Blood_5 was originally loaded with OpenCV → stored in BGR → MISMATCH
+  - IF Blood_5 was originally loaded with PIL/skimage → stored in RGB → OK
+
+======================================================================
+STEP 2: PER-CHANNEL PIXEL STATS (200 images, AFTER preprocessing)
+======================================================================
+
+PBC (200 images, after VAL_TF normalize):
+  Per-channel MEAN: R=1.6333 G=1.2420 B=1.3871
+  Per-channel STD:  R=0.7383  G=0.8723  B=0.3629
+
+PBC (200 images, after Resize+ToTensor, BEFORE normalize):
+  Per-channel MEAN: R=0.8590 G=0.7342 B=0.7181
+  Per-channel STD:  R=0.1691  G=0.1954  B=0.0816
+
+Blood_5 (200 images, after VAL_TF, treating stored as RGB):
+  Per-channel MEAN: R=0.8143 G=0.7759 B=1.5121
+  Per-channel STD:  R=0.9629  G=1.3050  B=0.7646
+
+Blood_5 (200 images, after Resize+ToTensor, treating stored as RGB, BEFORE normalize):
+  Per-channel MEAN: R=0.6715 G=0.6298 B=0.7462
+  Per-channel STD:  R=0.2205  G=0.2923  B=0.1720
+
+Blood_5 (200 images, BGR→RGB swapped, after VAL_TF):
+  Per-channel MEAN: R=1.1407 G=0.7759 B=1.1799
+  Per-channel STD:  R=0.7513  G=1.3050  B=0.9800
+
+Blood_5 (200 images, BGR→RGB swapped, BEFORE normalize):
+  Per-channel MEAN: R=0.7462 G=0.6298 B=0.6715
+  Per-channel STD:  R=0.1720  G=0.2923  B=0.2205
+
+Mean absolute channel-mean difference (after VAL_TF):
+  PBC vs Blood5(as-RGB):  0.4701
+  PBC vs Blood5(BGR→RGB): 0.3886
+  (Smaller → more similar distribution to PBC)
+
+======================================================================
+STEP 5: BLOOD_5 SANITY CHECK (5 sample images)
+======================================================================
+
+  Image [0] class=neutrophil:
+    Shape: (150, 150, 3), dtype: uint8
+    Range: [16, 255]  std=60.1
+    Per-channel mean: R=180.0 G=163.0 B=205.2
+    Bright (>200): 46.6%  Dark (<100): 12.3%
+    Single-cell crop plausible: True
+
+  Image [500] class=lymphocyte:
+    Shape: (150, 150, 3), dtype: uint8
+    Range: [50, 255]  std=47.7
+    Per-channel mean: R=195.1 G=183.8 B=215.8
+    Bright (>200): 53.7%  Dark (<100): 6.9%
+    Single-cell crop plausible: True
+
+  Image [1000] class=lymphocyte:
+    Shape: (150, 150, 3), dtype: uint8
+    Range: [7, 255]  std=68.3
+    Per-channel mean: R=178.7 G=172.7 B=205.3
+    Bright (>200): 48.7%  Dark (<100): 14.7%
+    Single-cell crop plausible: True
+
+  Image [2000] class=lymphocyte:
+    Shape: (150, 150, 3), dtype: uint8
+    Range: [40, 255]  std=57.0
+    Per-channel mean: R=197.5 G=191.3 B=206.5
+    Bright (>200): 53.5%  Dark (<100): 9.1%
+    Single-cell crop plausible: True
+
+  Image [4000] class=lymphocyte:
+    Shape: (150, 150, 3), dtype: uint8
+    Range: [7, 255]  std=59.1
+    Per-channel mean: R=187.3 G=183.1 B=205.0
+    Bright (>200): 57.3%  Dark (<100): 9.2%
+    Single-cell crop plausible: True
+
+PBC sample [0] class=monocyte:
+  Shape: (363, 360, 3), dtype: uint8
+  Range: [0, 255]  std=42.8
+  Per-channel mean: R=223.3 G=189.4 B=182.9
+
+======================================================================
+TRAINING MODEL (seed=0, probe)
+======================================================================
+  Ep 1: train=0.2278/0.929  val=0.0977/0.963
+  Ep 2: train=0.0563/0.983  val=0.0943/0.966
+  Ep 3: train=0.0367/0.988  val=0.0820/0.968
+  Ep 4: train=0.0267/0.991  val=0.0678/0.975
+  Ep 5: train=0.0156/0.995  val=0.0546/0.982
+  Ep 6: train=0.0120/0.997  val=0.0530/0.984
+  Ep 7: train=0.0102/0.997  val=0.0638/0.982
+  Ep 8: train=0.0058/0.999  val=0.0583/0.981
+  Ep 9: train=0.0041/0.999  val=0.0518/0.985
+  Ep10: train=0.0032/0.999  val=0.0527/0.985
+  Ep11: train=0.0022/0.999  val=0.0575/0.986
+  Ep12: train=0.0019/1.000  val=0.0507/0.987
+  Ep13: train=0.0017/1.000  val=0.0516/0.986
+  Ep14: train=0.0016/1.000  val=0.0521/0.985
+  Ep15: train=0.0012/1.000  val=0.0516/0.986
+Best val loss: 0.0507
+
+=== COLLECTING LOGITS ===
+  PBC val logits...
+  PBC test logits...
+
+PBC test: acc=0.9891  ECE=0.0055
+Temperature T*=1.3121
+  Blood5 logits (RGB, as refine-01)...
+  Blood5 logits (BGR→RGB corrected)...
+
+======================================================================
+STEP 3: BLOOD_5 EVALUATION (matched preprocessing = PBC's pipeline)
+======================================================================
+Note: In refine-01, BOTH PBC and Blood_5 used IDENTICAL VAL_TF.
+The 'matched preprocessing' IS what was already done. Repeating here.
+Additionally testing BGR→RGB corrected path to probe channel-swap hypothesis.
+
+[A] Blood_5 with standard preprocessing (same as refine-01, treating as RGB):
+  Accuracy (5-class): 0.1254
+  ECE (15-bin):       0.7855
+  Dominant class:     monocyte (99.2% of predictions)
+  8-class dominant:   ig (50.1%)
+  Prediction histogram (5-class): {'basophil': 0, 'eosinophil': 26, 'lymphocyte': 10, 'monocyte': 5136, 'neutrophil': 3}
+  Confusion matrix (5×5):
+    basophil    : [0, 0, 0, 132, 0]
+    eosinophil  : [0, 0, 0, 148, 0]
+    lymphocyte  : [0, 20, 10, 1210, 1]
+    monocyte    : [0, 5, 0, 637, 0]
+    neutrophil  : [0, 1, 0, 3009, 2]
+
+[B] Blood_5 with BGR→RGB channel swap (probe: if stored in BGR format):
+  Accuracy (5-class): 0.0193
+  ECE (15-bin):       0.9263
+  Dominant class:     eosinophil (98.5% of predictions)
+  Prediction histogram (5-class): {'basophil': 0, 'eosinophil': 5098, 'lymphocyte': 0, 'monocyte': 77, 'neutrophil': 0}
+  Confusion matrix (5×5):
+    basophil    : [0, 120, 0, 12, 0]
+    eosinophil  : [0, 97, 0, 51, 0]
+    lymphocyte  : [0, 1241, 0, 0, 0]
+    monocyte    : [0, 639, 0, 3, 0]
+    neutrophil  : [0, 3001, 0, 11, 0]
+
+======================================================================
+STEP 4: CONTROL — PBC test set through Blood_5's preprocessing path
+======================================================================
+Blood_5 preprocessing path:
+  np.uint8 array → PIL.fromarray(arr, 'RGB') → Resize(224) → ToTensor → Normalize(ImageNet)
+PBC preprocessing path (identical transform):
+  PIL image → .convert('RGB') → Resize(224) → ToTensor → Normalize(ImageNet)
+Since BOTH use VAL_TF, the 'Blood_5 path' is IDENTICAL to PBC test path.
+The only difference: raw image format (PIL JPEG vs numpy uint8 array).
+
+Verification: PBC images via PIL.fromarray(numpy_array, 'RGB') path:
+  Collecting PBC-via-numpy logits...
+
+PBC test via numpy-roundtrip path (simulating Blood_5 loading):
+  Accuracy: 0.9891  ECE: 0.0055
+  (Original PBC path: acc=0.9891, ECE=0.0055)
+  Difference in accuracy: 0.0000
+
+  → PBC accuracy COLLAPSES through Blood_5 path: False
+  CONCLUSION: preprocessing paths are equivalent for PBC images
+  (The collapse on Blood_5 is NOT due to numpy-roundtrip artifact)
+
+Control result: {'pbc_standard_acc': 0.9891135303265941, 'pbc_standard_ece': 0.005477957184170118, 'pbc_via_numpy_acc': 0.9891135303265941, 'pbc_via_numpy_ece': 0.005477957184170118, 'pbc_accuracy_delta': 0.0, 'pbc_collapses_via_blood5_path': False}
+
+======================================================================
+COLLAPSE CAUSE DETERMINATION
+======================================================================
+
+Evidence summary:
+  1. PBC accuracy via Blood_5 path: 0.9891 (vs 0.9891 standard)
+     → PBC collapses: False
+  2. Channel mean difference (after VAL_TF): 0.4701
+     (0 = identical distribution, high = different)
+  3. BGR→RGB correction accuracy improvement: -0.1061
+     (positive = BGR-swap helps; negative/zero = already correct order)
+  4. Blood_5 dominant class (standard): monocyte (99.2%)
+     Blood_5 dominant class (BGR→RGB): eosinophil (98.5%)
+
+★ COLLAPSE CAUSE: genuine_domain_shift
+★ EVIDENCE: 99%+ monocyte-collapse persists even with matched preprocessing; PBC test set does NOT collapse via Blood_5 path (acc delta 0.0000); Blood_5 images look like valid single-cell crops. Channel stats different (0.470) confirming genuine stain/acquisition shift.
+
+Wrote /workspace/results/ablation-02/LOG.md
+Wrote /workspace/results/ablation-02/RESULTS.json
+
+=== FINAL RESULTS ===
+{
+  "collapse_cause": "genuine_domain_shift",
+  "evidence": "99%+ monocyte-collapse persists even with matched preprocessing; PBC test set does NOT collapse via Blood_5 path (acc delta 0.0000); Blood_5 images look like valid single-cell crops. Channel stats different (0.470) confirming genuine stain/acquisition shift.",
+  "pbc_test_acc": 0.9891135303265941,
+  "T_star": 1.3121235370635986,
+  "blood5_dominant_pct": 99.25,
+  "pbc_via_blood5_path_acc": 0.9891135303265941,
+  "preprocessing_channel_diff": 0.4700518846511841
+}

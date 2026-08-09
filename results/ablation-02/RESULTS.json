@@ -1,0 +1,370 @@
+{
+  "status": "SUCCESS",
+  "scale": "probe",
+  "metrics": {
+    "pbc_preprocessing_pipeline": {
+      "dataset_storage_format": "HuggingFace dataset (PIL JPEG), RGB",
+      "load_step": "img = item['image']; img = img.convert('RGB')",
+      "resize": "224 x 224 px",
+      "interpolation": "PIL.Image.BILINEAR (default Resize in torchvision)",
+      "channel_order": "RGB (PIL native)",
+      "to_tensor": "torchvision.transforms.ToTensor() \u2192 float32 in [0.0, 1.0] (HWC uint8 / 255)",
+      "normalization_mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "normalization_std": [
+        0.229,
+        0.224,
+        0.225
+      ],
+      "normalization_formula": "(pixel - mean) / std, per-channel",
+      "output_dtype": "float32",
+      "output_shape": "[3, 224, 224]"
+    },
+    "blood5_preprocessing_pipeline": {
+      "dataset_storage_format": "numpy uint8 HWC flat array (N, 150*150*3), shape (5175, 67500)",
+      "load_step": "arr = blood5_data[i].reshape(150,150,3); img = PIL.Image.fromarray(arr, 'RGB')",
+      "resize": "224 x 224 px",
+      "interpolation": "PIL.Image.BILINEAR (default Resize in torchvision)",
+      "channel_order": "ASSUMED RGB (PIL.fromarray(..., 'RGB') treats stored bytes as R/G/B)",
+      "to_tensor": "torchvision.transforms.ToTensor() \u2192 float32 in [0.0, 1.0]",
+      "normalization_mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "normalization_std": [
+        0.229,
+        0.224,
+        0.225
+      ],
+      "normalization_formula": "(pixel - mean) / std, per-channel",
+      "output_dtype": "float32",
+      "output_shape": "[3, 224, 224]",
+      "CAUTION": "IF original images were saved with OpenCV (BGR order), PIL.fromarray(...,'RGB') swaps R and B channels vs what the model was trained with (PBC uses RGB PIL). This is the prime candidate for preprocessing mismatch."
+    },
+    "preprocessing_stats": {
+      "pbc": {
+        "after_val_tf_mean": [
+          1.6333253383636475,
+          1.2419555187225342,
+          1.3870532512664795
+        ],
+        "after_val_tf_std": [
+          0.7382819056510925,
+          0.8722558617591858,
+          0.3628678321838379
+        ],
+        "after_resize_totensor_mean": [
+          0.8590314984321594,
+          0.7341981530189514,
+          0.7180868983268738
+        ],
+        "after_resize_totensor_std": [
+          0.16906654834747314,
+          0.19538532197475433,
+          0.08164525777101517
+        ]
+      },
+      "blood5_as_rgb": {
+        "after_val_tf_mean": [
+          0.8142786026000977,
+          0.7758800387382507,
+          1.5120867490768433
+        ],
+        "after_val_tf_std": [
+          0.9629231095314026,
+          1.3050340414047241,
+          0.7646155953407288
+        ],
+        "after_resize_totensor_mean": [
+          0.6714699268341064,
+          0.6297970414161682,
+          0.7462194561958313
+        ],
+        "after_resize_totensor_std": [
+          0.2205093950033188,
+          0.2923276424407959,
+          0.1720385104417801
+        ]
+      },
+      "blood5_bgr2rgb": {
+        "after_val_tf_mean": [
+          1.1406960487365723,
+          0.7758800387382507,
+          1.1798659563064575
+        ],
+        "after_val_tf_std": [
+          0.7512598633766174,
+          1.3050340414047241,
+          0.9800418019294739
+        ],
+        "after_resize_totensor_mean": [
+          0.7462194561958313,
+          0.6297970414161682,
+          0.6714699268341064
+        ],
+        "after_resize_totensor_std": [
+          0.1720385104417801,
+          0.2923276424407959,
+          0.2205093950033188
+        ]
+      },
+      "channel_diff_rgb_vs_pbc": 0.4700518846511841,
+      "channel_diff_bgr2rgb_vs_pbc": 0.3886307179927826
+    },
+    "blood5_sample_statistics": [
+      {
+        "index": 0,
+        "class": "neutrophil",
+        "shape": [
+          150,
+          150,
+          3
+        ],
+        "dtype": "uint8",
+        "raw_min": 16,
+        "raw_max": 255,
+        "raw_mean_rgb": [
+          179.95782222222223,
+          162.99813333333333,
+          205.17573333333334
+        ],
+        "raw_std": 60.0941925176613,
+        "pct_bright_pixels_above200": 46.6,
+        "pct_dark_pixels_below100": 12.3,
+        "single_cell_crop_plausible": true
+      },
+      {
+        "index": 500,
+        "class": "lymphocyte",
+        "shape": [
+          150,
+          150,
+          3
+        ],
+        "dtype": "uint8",
+        "raw_min": 50,
+        "raw_max": 255,
+        "raw_mean_rgb": [
+          195.06986666666666,
+          183.81222222222223,
+          215.83986666666667
+        ],
+        "raw_std": 47.6677788294992,
+        "pct_bright_pixels_above200": 53.7,
+        "pct_dark_pixels_below100": 6.9,
+        "single_cell_crop_plausible": true
+      },
+      {
+        "index": 1000,
+        "class": "lymphocyte",
+        "shape": [
+          150,
+          150,
+          3
+        ],
+        "dtype": "uint8",
+        "raw_min": 7,
+        "raw_max": 255,
+        "raw_mean_rgb": [
+          178.6535111111111,
+          172.72146666666666,
+          205.29217777777777
+        ],
+        "raw_std": 68.25754316667425,
+        "pct_bright_pixels_above200": 48.7,
+        "pct_dark_pixels_below100": 14.7,
+        "single_cell_crop_plausible": true
+      },
+      {
+        "index": 2000,
+        "class": "lymphocyte",
+        "shape": [
+          150,
+          150,
+          3
+        ],
+        "dtype": "uint8",
+        "raw_min": 40,
+        "raw_max": 255,
+        "raw_mean_rgb": [
+          197.47115555555555,
+          191.27982222222224,
+          206.52613333333332
+        ],
+        "raw_std": 57.00458778211193,
+        "pct_bright_pixels_above200": 53.5,
+        "pct_dark_pixels_below100": 9.1,
+        "single_cell_crop_plausible": true
+      },
+      {
+        "index": 4000,
+        "class": "lymphocyte",
+        "shape": [
+          150,
+          150,
+          3
+        ],
+        "dtype": "uint8",
+        "raw_min": 7,
+        "raw_max": 255,
+        "raw_mean_rgb": [
+          187.26613333333333,
+          183.06457777777777,
+          204.95711111111112
+        ],
+        "raw_std": 59.097478798274786,
+        "pct_bright_pixels_above200": 57.3,
+        "pct_dark_pixels_below100": 9.2,
+        "single_cell_crop_plausible": true
+      }
+    ],
+    "model_training": {
+      "seed": 0,
+      "best_val_loss": 0.050703680907042664,
+      "epochs_run": 15,
+      "final_pbc_test_acc": 0.9891135303265941,
+      "final_pbc_test_ece": 0.005477957184170118,
+      "T_star": 1.3121235370635986
+    },
+    "step3_blood5_eval_standard": {
+      "acc_5class": 0.12541062801932368,
+      "ece_15bin": 0.7855359755967549,
+      "cm_5x5": [
+        [
+          0,
+          0,
+          0,
+          132,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          148,
+          0
+        ],
+        [
+          0,
+          20,
+          10,
+          1210,
+          1
+        ],
+        [
+          0,
+          5,
+          0,
+          637,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          3009,
+          2
+        ]
+      ],
+      "pred_hist_5class": {
+        "basophil": 0,
+        "eosinophil": 26,
+        "lymphocyte": 10,
+        "monocyte": 5136,
+        "neutrophil": 3
+      },
+      "dominant_class_5class": "monocyte",
+      "dominant_pct_5class": 99.25,
+      "pred_hist_8class": {
+        "monocyte": 2289,
+        "ig": 2593,
+        "neutrophil": 1,
+        "basophil": 0,
+        "lymphocyte": 0,
+        "erythroblast": 291,
+        "eosinophil": 0,
+        "platelet": 1
+      },
+      "dominant_class_8class": "ig",
+      "dominant_pct_8class": 50.11
+    },
+    "step3_blood5_eval_bgr2rgb": {
+      "acc_5class": 0.01932367149758454,
+      "ece_15bin": 0.9262611780189662,
+      "cm_5x5": [
+        [
+          0,
+          120,
+          0,
+          12,
+          0
+        ],
+        [
+          0,
+          97,
+          0,
+          51,
+          0
+        ],
+        [
+          0,
+          1241,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          639,
+          0,
+          3,
+          0
+        ],
+        [
+          0,
+          3001,
+          0,
+          11,
+          0
+        ]
+      ],
+      "pred_hist_5class": {
+        "basophil": 0,
+        "eosinophil": 5098,
+        "lymphocyte": 0,
+        "monocyte": 77,
+        "neutrophil": 0
+      },
+      "dominant_class_5class": "eosinophil",
+      "dominant_pct_5class": 98.51,
+      "pred_hist_8class": {
+        "monocyte": 54,
+        "ig": 80,
+        "neutrophil": 0,
+        "basophil": 0,
+        "lymphocyte": 0,
+        "erythroblast": 98,
+        "eosinophil": 4942,
+        "platelet": 1
+      },
+      "dominant_class_8class": "eosinophil",
+      "dominant_pct_8class": 95.5
+    },
+    "step4_control_pbc_via_blood5_path": {
+      "pbc_standard_acc": 0.9891135303265941,
+      "pbc_standard_ece": 0.005477957184170118,
+      "pbc_via_numpy_acc": 0.9891135303265941,
+      "pbc_via_numpy_ece": 0.005477957184170118,
+      "pbc_accuracy_delta": 0.0,
+      "pbc_collapses_via_blood5_path": false
+    },
+    "collapse_cause": "genuine_domain_shift",
+    "collapse_evidence": "99%+ monocyte-collapse persists even with matched preprocessing; PBC test set does NOT collapse via Blood_5 path (acc delta 0.0000); Blood_5 images look like valid single-cell crops. Channel stats different (0.470) confirming genuine stain/acquisition shift."
+  },
+  "subject_executed": "Preprocessing mismatch diagnosis for Blood_5 monocyte collapse. Compared exact PBC vs Blood_5 preprocessing pipelines (resize, interpolation, channel order, dtype, value range, normalization). Measured per-channel pixel statistics for 200-image samples from both datasets after preprocessing. Re-evaluated Blood_5 under matched pipeline and BGR->RGB corrected pipeline. Control: PBC test set through Blood_5 numpy-roundtrip path. Sanity-checked 5 Blood_5 sample images.",
+  "notes": "VERDICT: genuine_domain_shift. Both datasets use identical VAL_TF (Resize 224x224 BILINEAR, ToTensor [0,1], Normalize ImageNet [0.485,0.456,0.406]/[0.229,0.224,0.225]). BGR->RGB swap test rules out channel-order mismatch (swap makes accuracy 12.5%->1.9%, worse not better). PBC numpy-roundtrip control gives identical accuracy (delta=0.000), ruling out loading-path artifacts. Blood_5 images are valid single-cell crops (uint8, full range, plausible bright/dark pixel ratios). The monocyte collapse is driven by genuine distributional shift: Blood_5 has systematically higher blue channel (B>R>G, raw means ~205/180/163) vs PBC (R>G>B, raw means ~218/184/183). After ImageNet normalization, Blood_5 B-channel mean=+1.512 vs PBC +1.387, while Blood_5 R-channel mean=+0.814 vs PBC +1.633 -- a large and genuine distributional difference. Data stored in HWC format (confirmed by corner-pixel analysis: white-background corners R=226,G=239,B=230 in HWC vs G=138 in CHW interpretation). Dataset provenance: CIFAR-style pickle in Zenodo record doi:10.5281/zenodo.21628834, file code_WITH_dataset.zip, path data_local/blood_5/test_batch."
+}

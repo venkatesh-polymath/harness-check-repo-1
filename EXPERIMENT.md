@@ -1,10 +1,10 @@
-# EXPERIMENT BRIEF — round refine-01 (probe)
+# EXPERIMENT BRIEF — round ablation-02 (probe)
 
 ## THIS ROUND (do exactly this)
-CRITICAL: the previous run silently substituted in-domain PBC data when the cross-site download failed, and reported it as target-domain results. That must not happen again. Your job is to obtain a GENUINE second-site dataset and measure real cross-site transfer. (1) Acquire a true cross-site WBC dataset - try Raabin-WBC from its official source (raabindata.com direct download) and any HuggingFace mirror; if that fails try Chula-WBC / LISC / any public WBC set from a DIFFERENT lab than Barcelona PBC. VERIFY provenance by printing dataset source URL, sample count, and image dimensions, and confirm it is NOT PBC. (2) If NO genuine cross-site dataset can be obtained, set status=FAILED with metrics.cross_site_data_obtained=false and STOP - do NOT substitute in-domain data, do NOT synthesise a proxy, do NOT report in-domain numbers as cross-site. A clean FAILED is the correct outcome in that case. (3) If obtained: train ResNet-18 on PBC (3 seeds), then for EACH seed report on the genuine target set - accuracy, ECE-15, confusion matrix, and the same three label-alignment scenarios (mismatched indices / aligned / restricted-to-shared-classes-renormalised). Also fit temperature T on the PBC val split and report target ECE with and without that source-fit T. (4) Emit metrics.cross_site_data_obtained (bool), metrics.dataset_source_url, metrics.n_target_samples and per-seed values for everything.
+DIAGNOSE A COLLAPSE, do not measure calibration. On the Blood_5 target set the PBC-trained ResNet-18 predicts 'monocyte' for 99.2% of 5175 images (confusion matrix rows all pile into one column). That signature usually means PREPROCESSING MISMATCH, not domain shift. Determine which, and report it plainly either way. Do exactly this: (1) Print and compare the exact preprocessing applied to PBC vs Blood_5 - resize dimensions, interpolation, channel order (RGB vs BGR), dtype, value range (0-1 vs 0-255), and the normalisation mean/std actually used for each. (2) Report per-channel pixel mean and std of a 200-image sample from BOTH datasets AFTER preprocessing; if these differ substantially that is the answer. (3) Re-evaluate the target set under a MATCHED preprocessing pipeline identical to PBC's, and report accuracy + the 5x5 confusion matrix again. (4) As a control, evaluate the PBC test set through the BLOOD_5 preprocessing path - if in-domain accuracy also collapses, preprocessing is proven to be the cause. (5) Sanity-check Blood_5 itself: report 5 sample image statistics and whether images look like the same modality (single-cell crops) as PBC. Emit metrics.collapse_cause as one of 'preprocessing_mismatch' | 'genuine_domain_shift' | 'dataset_quality' | 'undetermined', with the evidence that decided it.
 
 Prior rounds' code and results are already committed under results/*/. Read them
-for context and build on them; write this round's outputs under results/refine-01/.
+for context and build on them; write this round's outputs under results/ablation-02/.
 
 ## Idea
 Source-Fit Temperature Scaling Under Cross-Site Acquisition Shift in Blood-Smear Classification
@@ -45,4 +45,4 @@ Sanity gates: fixed seed, verify loss at init, input-independent baseline, overf
 - refutes the hypothesis if: 95% CI on mean D includes 0 across 8 seeds
 - smallest effect worth caring about (SESOI): 1 pp absolute in D (below 15-bin ECE quantisation noise at N=500)
 
-Record everything under results/refine-01/. Do not commit weights.
+Record everything under results/ablation-02/. Do not commit weights.
