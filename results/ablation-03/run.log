@@ -1,0 +1,230 @@
+======================================================================
+ABLATION-03: Separate Calibration from Collapse
+======================================================================
+Date: 2026-08-09 00:32:52 UTC
+Device: cuda
+GPU: NVIDIA L4
+
+PBC classes (8): ['monocyte', 'ig', 'neutrophil', 'basophil', 'lymphocyte', 'erythroblast', 'eosinophil', 'platelet']
+Blood5 classes (5): ['basophil', 'eosinophil', 'lymphocyte', 'monocyte', 'neutrophil']
+PBC-only (masked) indices: [1, 5, 7] = ['ig', 'erythroblast', 'platelet']
+PBC shared indices: [0, 2, 3, 4, 6]
+Blood5→PBC index mapping: {0: 3, 1: 6, 2: 4, 3: 0, 4: 2}
+PBC→Blood5 index mapping: {0: 3, 2: 4, 3: 0, 4: 2, 6: 1}
+PBC shared in Blood5 order: [3, 6, 4, 0, 2]
+
+=== ACQUIRING BLOOD_5 DATASET ===
+Found cached Blood5 data at /workspace/_weights/
+Blood5: N=5175, shape=(5175, 150, 150, 3)
+Blood5 class counts: {'basophil': 132, 'eosinophil': 148, 'lymphocyte': 1241, 'monocyte': 642, 'neutrophil': 3012}
+
+=== LOADING PBC SOURCE DATASET ===
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Generating train split:   0%|          | 0/17092 [00:00<?, ? examples/s]Generating train split:  54%|█████▍    | 9300/17092 [00:00<00:00, 90688.29 examples/s]Generating train split: 100%|██████████| 17092/17092 [00:00<00:00, 100287.96 examples/s]
+PBC total: 17092 images, classes: ['monocyte', 'ig', 'neutrophil', 'basophil', 'lymphocyte', 'erythroblast', 'eosinophil', 'platelet']
+Loaded in 8.1s
+PBC split: train=11959 val=2561 test=2572
+
+======================================================================
+SEED 0 (1/3)
+======================================================================
+  Training ResNet-18 on PBC (no checkpoint found) ...
+Downloading: "https://download.pytorch.org/models/resnet18-f37072fd.pth" to /root/.cache/torch/hub/checkpoints/resnet18-f37072fd.pth
+  0%|          | 0.00/44.7M [00:00<?, ?B/s]  1%|          | 256k/44.7M [00:00<00:20, 2.32MB/s]  4%|▎         | 1.62M/44.7M [00:00<00:05, 8.99MB/s] 15%|█▍        | 6.50M/44.7M [00:00<00:01, 27.3MB/s] 26%|██▋       | 11.8M/44.7M [00:00<00:00, 37.7MB/s] 38%|███▊      | 16.8M/44.7M [00:00<00:00, 42.8MB/s] 49%|████▉     | 22.0M/44.7M [00:00<00:00, 46.5MB/s] 61%|██████    | 27.1M/44.7M [00:00<00:00, 48.6MB/s] 72%|███████▏  | 32.2M/44.7M [00:00<00:00, 50.1MB/s] 84%|████████▎ | 37.4M/44.7M [00:00<00:00, 51.1MB/s] 95%|█████████▌| 42.5M/44.7M [00:01<00:00, 51.9MB/s]100%|██████████| 44.7M/44.7M [00:01<00:00, 43.9MB/s]
+  Ep 1: train=0.2278/0.929  val=0.0977/0.963
+  Ep 2: train=0.0563/0.983  val=0.0943/0.966
+  Ep 3: train=0.0367/0.988  val=0.0820/0.968
+  Ep 4: train=0.0267/0.991  val=0.0678/0.975
+  Ep 5: train=0.0156/0.995  val=0.0546/0.982
+  Ep 6: train=0.0120/0.997  val=0.0530/0.984
+  Ep 7: train=0.0102/0.997  val=0.0638/0.982
+  Ep 8: train=0.0058/0.999  val=0.0583/0.981
+  Ep 9: train=0.0041/0.999  val=0.0518/0.985
+  Ep10: train=0.0032/0.999  val=0.0527/0.985
+  Ep11: train=0.0022/0.999  val=0.0575/0.986
+  Ep12: train=0.0019/1.000  val=0.0507/0.987
+  Ep13: train=0.0017/1.000  val=0.0516/0.986
+  Ep14: train=0.0016/1.000  val=0.0521/0.985
+  Ep15: train=0.0012/1.000  val=0.0516/0.986
+  Best val loss: 0.0507
+  Collecting logits ...
+  Temperature T*=1.3121
+  [Analysis 1] Label-aware masked softmax on Blood5 ...
+    T=1.000 (no_T): acc=0.1254  ECE=0.7855
+    T=1.312 (with_T): acc=0.1254  ECE=0.7248
+  [Analysis 2] Classwise ECE on Blood5 ...
+    basophil: noT_ECE=0.8581 acc=0.0000  T_ECE=0.7632 acc=0.0000  n=132
+    eosinophil: noT_ECE=0.8277 acc=0.0000  T_ECE=0.7297 acc=0.0000  n=148
+    lymphocyte: noT_ECE=0.8435 acc=0.0081  T_ECE=0.7685 acc=0.0081  n=1241
+    monocyte: noT_ECE=0.1019 acc=0.9922  T_ECE=0.1669 acc=0.9922  n=642
+    neutrophil: noT_ECE=0.9456 acc=0.0007  T_ECE=0.8949 acc=0.0007  n=3012
+  [Analysis 3] Accuracy-stratified calibration on Blood5 ...
+    noT: acc=0.1254  mean_conf_correct=0.8873  mean_conf_incorrect=0.9143  conf_gap=-0.0270
+    T:   acc=0.1254  mean_conf_correct=0.8225  mean_conf_incorrect=0.8542  conf_gap=-0.0317
+  [Analysis 4] PBC in-domain reference ...
+    PBC full 8class noT: acc=0.9891  ECE=0.0055
+    PBC full 8class T:   acc=0.9891  ECE=0.0035
+    PBC shared5 noT: acc=0.9987  ECE=0.0003
+    PBC shared5 T:   acc=0.9987  ECE=0.0023
+    PBC shared5 acc-strat noT: correct_conf=0.9987  incorrect_conf=0.7657
+    PBC shared5 acc-strat T:   correct_conf=0.9968  incorrect_conf=0.7377
+
+  ── SEED 0 SUMMARY ──
+  T*=1.3121
+  Blood5 masked: acc_noT=0.1254  ECE_noT=0.7855  acc_T=0.1254  ECE_T=0.7248
+  Blood5 acc-strat noT: conf_correct=0.8873  conf_incorrect=0.9143  gap=-0.0270
+  PBC 8class: acc=0.9891  ECE=0.0055
+
+======================================================================
+SEED 1 (2/3)
+======================================================================
+  Training ResNet-18 on PBC (no checkpoint found) ...
+  Ep 1: train=0.2193/0.933  val=0.1736/0.941
+  Ep 2: train=0.0560/0.982  val=0.0745/0.973
+  Ep 3: train=0.0415/0.987  val=0.0815/0.972
+  Ep 4: train=0.0248/0.992  val=0.0546/0.980
+  Ep 5: train=0.0161/0.995  val=0.0603/0.980
+  Ep 6: train=0.0134/0.995  val=0.0562/0.982
+  Ep 7: train=0.0084/0.998  val=0.0635/0.982
+  Ep 8: train=0.0056/0.999  val=0.0533/0.985
+  Ep 9: train=0.0035/0.999  val=0.0688/0.982
+  Ep10: train=0.0028/1.000  val=0.0500/0.985
+  Ep11: train=0.0016/1.000  val=0.0540/0.985
+  Ep12: train=0.0015/1.000  val=0.0535/0.986
+  Ep13: train=0.0015/1.000  val=0.0517/0.985
+  Ep14: train=0.0013/1.000  val=0.0526/0.984
+  Ep15: train=0.0013/1.000  val=0.0518/0.984
+  Early stop at epoch 15
+  Best val loss: 0.0500
+  Collecting logits ...
+  Temperature T*=1.3035
+  [Analysis 1] Label-aware masked softmax on Blood5 ...
+    T=1.000 (no_T): acc=0.1316  ECE=0.6615
+    T=1.303 (with_T): acc=0.1316  ECE=0.5835
+  [Analysis 2] Classwise ECE on Blood5 ...
+    basophil: noT_ECE=0.6632 acc=0.0000  T_ECE=0.5668 acc=0.0000  n=132
+    eosinophil: noT_ECE=0.6774 acc=0.0405  T_ECE=0.5848 acc=0.0405  n=148
+    lymphocyte: noT_ECE=0.7282 acc=0.0371  T_ECE=0.6484 acc=0.0371  n=1241
+    monocyte: noT_ECE=0.0891 acc=0.9782  T_ECE=0.1528 acc=0.9782  n=642
+    neutrophil: noT_ECE=0.7932 acc=0.0003  T_ECE=0.7147 acc=0.0003  n=3012
+  [Analysis 3] Accuracy-stratified calibration on Blood5 ...
+    noT: acc=0.1316  mean_conf_correct=0.8646  mean_conf_incorrect=0.7823  conf_gap=0.0823
+    T:   acc=0.1316  mean_conf_correct=0.8018  mean_conf_incorrect=0.7020  conf_gap=0.0998
+  [Analysis 4] PBC in-domain reference ...
+    PBC full 8class noT: acc=0.9911  ECE=0.0034
+    PBC full 8class T:   acc=0.9911  ECE=0.0013
+    PBC shared5 noT: acc=0.9981  ECE=0.0007
+    PBC shared5 T:   acc=0.9981  ECE=0.0030
+    PBC shared5 acc-strat noT: correct_conf=0.9980  incorrect_conf=0.6510
+    PBC shared5 acc-strat T:   correct_conf=0.9958  incorrect_conf=0.6042
+
+  ── SEED 1 SUMMARY ──
+  T*=1.3035
+  Blood5 masked: acc_noT=0.1316  ECE_noT=0.6615  acc_T=0.1316  ECE_T=0.5835
+  Blood5 acc-strat noT: conf_correct=0.8646  conf_incorrect=0.7823  gap=0.0823
+  PBC 8class: acc=0.9911  ECE=0.0034
+
+======================================================================
+SEED 2 (3/3)
+======================================================================
+  Training ResNet-18 on PBC (no checkpoint found) ...
+  Ep 1: train=0.2268/0.931  val=0.0836/0.974
+  Ep 2: train=0.0597/0.981  val=0.1045/0.966
+  Ep 3: train=0.0343/0.989  val=0.0814/0.975
+  Ep 4: train=0.0201/0.994  val=0.0881/0.972
+  Ep 5: train=0.0193/0.993  val=0.0586/0.979
+  Ep 6: train=0.0117/0.996  val=0.0714/0.978
+  Ep 7: train=0.0105/0.997  val=0.0612/0.983
+  Ep 8: train=0.0063/0.998  val=0.0547/0.984
+  Ep 9: train=0.0033/0.999  val=0.0692/0.983
+  Ep10: train=0.0039/0.999  val=0.0551/0.984
+  Ep11: train=0.0026/1.000  val=0.0523/0.986
+  Ep12: train=0.0012/1.000  val=0.0546/0.986
+  Ep13: train=0.0015/1.000  val=0.0547/0.986
+  Ep14: train=0.0014/1.000  val=0.0536/0.987
+  Ep15: train=0.0011/1.000  val=0.0537/0.987
+  Best val loss: 0.0523
+  Collecting logits ...
+  Temperature T*=1.3165
+  [Analysis 1] Label-aware masked softmax on Blood5 ...
+    T=1.000 (no_T): acc=0.1281  ECE=0.6629
+    T=1.316 (with_T): acc=0.1281  ECE=0.5703
+  [Analysis 2] Classwise ECE on Blood5 ...
+    basophil: noT_ECE=0.6840 acc=0.0152  T_ECE=0.5831 acc=0.0152  n=132
+    eosinophil: noT_ECE=0.7104 acc=0.0000  T_ECE=0.6064 acc=0.0000  n=148
+    lymphocyte: noT_ECE=0.7424 acc=0.0056  T_ECE=0.6485 acc=0.0056  n=1241
+    monocyte: noT_ECE=0.1632 acc=0.9984  T_ECE=0.2510 acc=0.9984  n=642
+    neutrophil: noT_ECE=0.8029 acc=0.0043  T_ECE=0.7108 acc=0.0043  n=3012
+  [Analysis 3] Accuracy-stratified calibration on Blood5 ...
+    noT: acc=0.1281  mean_conf_correct=0.8250  mean_conf_incorrect=0.7860  conf_gap=0.0390
+    T:   acc=0.1281  mean_conf_correct=0.7379  mean_conf_incorrect=0.6926  conf_gap=0.0453
+  [Analysis 4] PBC in-domain reference ...
+    PBC full 8class noT: acc=0.9907  ECE=0.0035
+    PBC full 8class T:   acc=0.9907  ECE=0.0017
+    PBC shared5 noT: acc=0.9994  ECE=0.0024
+    PBC shared5 T:   acc=0.9994  ECE=0.0034
+    PBC shared5 acc-strat noT: correct_conf=0.9982  incorrect_conf=0.9992
+    PBC shared5 acc-strat T:   correct_conf=0.9959  incorrect_conf=0.9944
+
+  ── SEED 2 SUMMARY ──
+  T*=1.3165
+  Blood5 masked: acc_noT=0.1281  ECE_noT=0.6629  acc_T=0.1281  ECE_T=0.5703
+  Blood5 acc-strat noT: conf_correct=0.8250  conf_incorrect=0.7860  gap=0.0390
+  PBC 8class: acc=0.9907  ECE=0.0035
+
+
+=== AGGREGATE RESULTS ===
+
+Key aggregate metrics:
+  T_star: 1.3107 ± 0.0054  per_seed=[1.3121235370635986, 1.3034565448760986, 1.3164615631103516]
+  blood5_masked_noT_acc: 0.1284 ± 0.0025  per_seed=[0.12541062801932368, 0.13159420289855073, 0.12811594202898552]
+  blood5_masked_noT_ece: 0.7033 ± 0.0582  per_seed=[0.7855359653459079, 0.6614905140019846, 0.6628572275615545]
+  blood5_masked_T_acc: 0.1284 ± 0.0025  per_seed=[0.12541062801932368, 0.13159420289855073, 0.12811594202898552]
+  blood5_masked_T_ece: 0.6262 ± 0.0699  per_seed=[0.7247979599957304, 0.5834968365160164, 0.5703228224619575]
+  blood5_astrat_noT_mean_conf_correct: 0.8590 ± 0.0257  per_seed=[0.8873053193092346, 0.8645695447921753, 0.8249983191490173]
+  blood5_astrat_noT_mean_conf_incorrect: 0.8275 ± 0.0614  per_seed=[0.914336621761322, 0.7822521924972534, 0.7859734296798706]
+  blood5_astrat_noT_conf_gap: 0.0314 ± 0.0450  per_seed=[-0.027031302452087402, 0.08231735229492188, 0.03902488946914673]
+  pbc_8class_noT_acc: 0.9903 ± 0.0008  per_seed=[0.9891135303265941, 0.9910575427682737, 0.9906687402799378]
+  pbc_8class_noT_ece: 0.0041 ± 0.0010  per_seed=[0.005477939907629414, 0.0034094326441432544, 0.003477972817736123]
+  pbc_8class_noT_acc_strat_conf_correct: 0.9959 ± 0.0003  per_seed=[0.996159017086029, 0.9958834052085876, 0.9955269694328308]
+  pbc_8class_noT_acc_strat_conf_incorrect: 0.8251 ± 0.0107  per_seed=[0.8334636688232422, 0.810060441493988, 0.8318093419075012]
+
+=== INTERPRETATION ===
+Cross-site (Blood5) accuracy: 0.1284  ECE: 0.7033
+In-domain  (PBC)    accuracy: 0.9903  ECE: 0.0041
+
+Accuracy-stratified confidence:
+  Blood5: correct=0.8590  incorrect=0.8275  gap=0.0314
+  PBC:    correct=0.9959  incorrect=0.8251  gap=0.1707
+
+Interpretation: both
+Reasoning: Representation collapse: accuracy=12.8% << chance for 5-class (20%). AND miscalibration: mean confidence on INCORRECT predictions = 0.828 (confidently wrong). Confidence gap correct-incorrect = 0.031 ≈ 0 (model cannot distinguish its own errors). PBC in-domain conf gap = 0.171 >> 0 (PBC is well-calibrated). The high ECE (70.3%) is driven by BOTH: (a) near-total feature collapse to one class, AND (b) persistent overconfidence on wrong predictions after masking.
+
+Wrote /workspace/results/ablation-03/LOG.md
+Wrote /workspace/results/ablation-03/RESULTS.json
+
+=== FINAL SUMMARY ===
+{
+  "verdict": "both",
+  "reasoning": "Representation collapse: accuracy=12.8% << chance for 5-class (20%). AND miscalibration: mean confidence on INCORRECT predictions = 0.828 (confidently wrong). Confidence gap correct-incorrect = 0.031 \u2248 0 (model cannot distinguish its own errors). PBC in-domain conf gap = 0.171 >> 0 (PBC is well-calibrated). The high ECE (70.3%) is driven by BOTH: (a) near-total feature collapse to one class, AND (b) persistent overconfidence on wrong predictions after masking.",
+  "key_numbers": {
+    "cross_site_accuracy_mean": 0.1284,
+    "cross_site_ece_masked_noT_mean": 0.7033,
+    "cross_site_ece_masked_T_mean": 0.6262,
+    "cross_site_mean_conf_CORRECT": 0.859,
+    "cross_site_mean_conf_INCORRECT": 0.8275,
+    "cross_site_conf_gap_correct_minus_incorrect": 0.0314,
+    "indomain_pbc_accuracy_mean": 0.9903,
+    "indomain_pbc_ece_noT_mean": 0.0041,
+    "indomain_pbc_mean_conf_CORRECT": 0.9959,
+    "indomain_pbc_mean_conf_INCORRECT": 0.8251,
+    "indomain_pbc_conf_gap": 0.1707,
+    "T_star_mean": 1.3107,
+    "miscalib_threshold_used": 0.7,
+    "collapse_threshold_used": 0.2,
+    "is_miscalibrated": true,
+    "is_collapsed": true
+  }
+}
+
+Status: SUCCESS

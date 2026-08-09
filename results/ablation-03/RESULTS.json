@@ -1,0 +1,1237 @@
+{
+  "status": "SUCCESS",
+  "scale": "probe",
+  "metrics": {
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "per_seed": [
+      {
+        "seed": 0,
+        "training": {
+          "best_val_loss": 0.050703680907042664,
+          "epochs_run": 15,
+          "history": [
+            {
+              "epoch": 1,
+              "train_loss": 0.22784424508389986,
+              "val_loss": 0.09774330643852579,
+              "train_acc": 0.9291746801572037,
+              "val_acc": 0.9625146427176884
+            },
+            {
+              "epoch": 2,
+              "train_loss": 0.05634711482031398,
+              "val_loss": 0.09431429156870008,
+              "train_acc": 0.983359812693369,
+              "val_acc": 0.9664193674345959
+            },
+            {
+              "epoch": 3,
+              "train_loss": 0.03668807847404315,
+              "val_loss": 0.08195870489199059,
+              "train_acc": 0.9882933355631742,
+              "val_acc": 0.9683717297930496
+            },
+            {
+              "epoch": 4,
+              "train_loss": 0.02674539202659293,
+              "val_loss": 0.06779176885947305,
+              "train_acc": 0.9910527636089974,
+              "val_acc": 0.975400234283483
+            },
+            {
+              "epoch": 5,
+              "train_loss": 0.015621619830637715,
+              "val_loss": 0.054626359249495986,
+              "train_acc": 0.9950664771301948,
+              "val_acc": 0.9824287387739165
+            },
+            {
+              "epoch": 6,
+              "train_loss": 0.011984442217173171,
+              "val_loss": 0.05303443419618104,
+              "train_acc": 0.9969060958274103,
+              "val_acc": 0.9839906286606794
+            },
+            {
+              "epoch": 7,
+              "train_loss": 0.010207140723618564,
+              "val_loss": 0.06376975392423954,
+              "train_acc": 0.9971569529224852,
+              "val_acc": 0.9824287387739165
+            },
+            {
+              "epoch": 8,
+              "train_loss": 0.00578376571249875,
+              "val_loss": 0.0582513160920284,
+              "train_acc": 0.9986620954929342,
+              "val_acc": 0.9812573213588442
+            },
+            {
+              "epoch": 9,
+              "train_loss": 0.004131291333140876,
+              "val_loss": 0.05184890495206877,
+              "train_acc": 0.998912952588009,
+              "val_acc": 0.9847715736040609
+            },
+            {
+              "epoch": 10,
+              "train_loss": 0.0032187630996872683,
+              "val_loss": 0.05274502882727072,
+              "train_acc": 0.9991638096830838,
+              "val_acc": 0.9851620460757516
+            },
+            {
+              "epoch": 11,
+              "train_loss": 0.002167067294094616,
+              "val_loss": 0.057492464483621136,
+              "train_acc": 0.9994982858098503,
+              "val_acc": 0.9863334634908238
+            },
+            {
+              "epoch": 12,
+              "train_loss": 0.0019468323802320229,
+              "val_loss": 0.050703680907042664,
+              "train_acc": 0.9996655238732336,
+              "val_acc": 0.9867239359625146
+            },
+            {
+              "epoch": 13,
+              "train_loss": 0.0017238893762738002,
+              "val_loss": 0.05162789685390532,
+              "train_acc": 0.9997491429049251,
+              "val_acc": 0.9855525185474424
+            },
+            {
+              "epoch": 14,
+              "train_loss": 0.0016214123025896675,
+              "val_loss": 0.052130091368811894,
+              "train_acc": 0.9996655238732336,
+              "val_acc": 0.9847715736040609
+            },
+            {
+              "epoch": 15,
+              "train_loss": 0.0011524524019466257,
+              "val_loss": 0.051581442386428006,
+              "train_acc": 0.9997491429049251,
+              "val_acc": 0.9855525185474424
+            }
+          ]
+        },
+        "T_star": 1.3121235370635986,
+        "blood5_masked_no_T": {
+          "T_applied": 1.0,
+          "acc": 0.12541062801932368,
+          "ece_15bin": 0.7855359653459079
+        },
+        "blood5_masked_with_T": {
+          "T_applied": 1.3121235370635986,
+          "acc": 0.12541062801932368,
+          "ece_15bin": 0.7247979599957304
+        },
+        "blood5_classwise_ece_no_T": {
+          "basophil": {
+            "n": 132,
+            "acc": 0.0,
+            "ece": 0.8580849256479377
+          },
+          "eosinophil": {
+            "n": 148,
+            "acc": 0.0,
+            "ece": 0.8277229882172638
+          },
+          "lymphocyte": {
+            "n": 1241,
+            "acc": 0.008058017727639,
+            "ece": 0.843462689282143
+          },
+          "monocyte": {
+            "n": 642,
+            "acc": 0.9922118380062306,
+            "ece": 0.10188655852343058
+          },
+          "neutrophil": {
+            "n": 3012,
+            "acc": 0.0006640106241699867,
+            "ece": 0.945568519719885
+          }
+        },
+        "blood5_classwise_ece_with_T": {
+          "basophil": {
+            "n": 132,
+            "acc": 0.0,
+            "ece": 0.7631548462492045
+          },
+          "eosinophil": {
+            "n": 148,
+            "acc": 0.0,
+            "ece": 0.7297279883075406
+          },
+          "lymphocyte": {
+            "n": 1241,
+            "acc": 0.008058017727639,
+            "ece": 0.7684900974622184
+          },
+          "monocyte": {
+            "n": 642,
+            "acc": 0.9922118380062306,
+            "ece": 0.16694520163201837
+          },
+          "neutrophil": {
+            "n": 3012,
+            "acc": 0.0006640106241699867,
+            "ece": 0.8949455078023364
+          }
+        },
+        "blood5_acc_strat_no_T": {
+          "n_correct": 649,
+          "n_incorrect": 4526,
+          "n_total": 5175,
+          "accuracy": 0.12541062801932368,
+          "mean_conf_correct": 0.8873053193092346,
+          "mean_conf_incorrect": 0.914336621761322,
+          "conf_gap": -0.027031302452087402
+        },
+        "blood5_acc_strat_with_T": {
+          "n_correct": 649,
+          "n_incorrect": 4526,
+          "n_total": 5175,
+          "accuracy": 0.12541062801932368,
+          "mean_conf_correct": 0.8225166201591492,
+          "mean_conf_incorrect": 0.8541794419288635,
+          "conf_gap": -0.031662821769714355
+        },
+        "pbc_no_T": {
+          "full_8class": {
+            "n": 2572,
+            "acc": 0.9891135303265941,
+            "ece_15bin": 0.005477939907629414,
+            "acc_strat": {
+              "n_correct": 2544,
+              "n_incorrect": 28,
+              "accuracy": 0.9891135303265941,
+              "mean_conf_correct": 0.996159017086029,
+              "mean_conf_incorrect": 0.8334636688232422,
+              "conf_gap": 0.16269534826278687
+            }
+          },
+          "shared5class": {
+            "n": 1550,
+            "acc": 0.9987096774193548,
+            "ece_15bin": 0.0003470396226452156,
+            "classwise_ece": {
+              "basophil": {
+                "n": 184,
+                "acc": 1.0,
+                "ece": 0.004031937731348948
+              },
+              "eosinophil": {
+                "n": 469,
+                "acc": 1.0,
+                "ece": 0.000946332269640109
+              },
+              "lymphocyte": {
+                "n": 183,
+                "acc": 1.0,
+                "ece": 0.0003102988493247256
+              },
+              "monocyte": {
+                "n": 214,
+                "acc": 1.0,
+                "ece": 0.0011531434883581264
+              },
+              "neutrophil": {
+                "n": 500,
+                "acc": 0.996,
+                "ece": 0.002063042163848887
+              }
+            },
+            "acc_strat": {
+              "n_correct": 1548,
+              "n_incorrect": 2,
+              "n_total": 1550,
+              "accuracy": 0.9987096774193548,
+              "mean_conf_correct": 0.9986632466316223,
+              "mean_conf_incorrect": 0.7657030820846558,
+              "conf_gap": 0.23296016454696655
+            }
+          }
+        },
+        "pbc_with_T": {
+          "full_8class": {
+            "n": 2572,
+            "acc": 0.9891135303265941,
+            "ece_15bin": 0.003461164979968079,
+            "acc_strat": {
+              "n_correct": 2544,
+              "n_incorrect": 28,
+              "accuracy": 0.9891135303265941,
+              "mean_conf_correct": 0.9924524426460266,
+              "mean_conf_incorrect": 0.7930852174758911,
+              "conf_gap": 0.1993672251701355
+            }
+          },
+          "shared5class": {
+            "n": 1550,
+            "acc": 0.9987096774193548,
+            "ece_15bin": 0.002284846459665608,
+            "classwise_ece": {
+              "basophil": {
+                "n": 184,
+                "acc": 1.0,
+                "ece": 0.006303965721441349
+              },
+              "eosinophil": {
+                "n": 469,
+                "acc": 1.0,
+                "ece": 0.0024939987705206376
+              },
+              "lymphocyte": {
+                "n": 183,
+                "acc": 1.0,
+                "ece": 0.001580670883095322
+              },
+              "monocyte": {
+                "n": 214,
+                "acc": 1.0,
+                "ece": 0.0035732928837571127
+              },
+              "neutrophil": {
+                "n": 500,
+                "acc": 0.996,
+                "ece": 0.0015025329589843683
+              }
+            },
+            "acc_strat": {
+              "n_correct": 1548,
+              "n_incorrect": 2,
+              "n_total": 1550,
+              "accuracy": 0.9987096774193548,
+              "mean_conf_correct": 0.9967590570449829,
+              "mean_conf_incorrect": 0.737726628780365,
+              "conf_gap": 0.2590324282646179
+            }
+          }
+        }
+      },
+      {
+        "seed": 1,
+        "training": {
+          "best_val_loss": 0.050031884571164816,
+          "epochs_run": 15,
+          "history": [
+            {
+              "epoch": 1,
+              "train_loss": 0.21928742924694714,
+              "val_loss": 0.17364165117682862,
+              "train_acc": 0.9332720127100929,
+              "val_acc": 0.9410386567746973
+            },
+            {
+              "epoch": 2,
+              "train_loss": 0.055954193889980124,
+              "val_loss": 0.07451385829669034,
+              "train_acc": 0.9817710510912283,
+              "val_acc": 0.9730573994533386
+            },
+            {
+              "epoch": 3,
+              "train_loss": 0.0415498098517068,
+              "val_loss": 0.08147992473397803,
+              "train_acc": 0.9868718120244168,
+              "val_acc": 0.9718859820382663
+            },
+            {
+              "epoch": 4,
+              "train_loss": 0.024807866161606767,
+              "val_loss": 0.05459697873895489,
+              "train_acc": 0.99222343005268,
+              "val_acc": 0.9804763764154627
+            },
+            {
+              "epoch": 5,
+              "train_loss": 0.016108574060602787,
+              "val_loss": 0.060265522281145636,
+              "train_acc": 0.9953173342252697,
+              "val_acc": 0.9800859039437719
+            },
+            {
+              "epoch": 6,
+              "train_loss": 0.01340519437724177,
+              "val_loss": 0.0561613580707819,
+              "train_acc": 0.9954009532569613,
+              "val_acc": 0.9824287387739165
+            },
+            {
+              "epoch": 7,
+              "train_loss": 0.00835793195594903,
+              "val_loss": 0.0634643228659584,
+              "train_acc": 0.9975750480809432,
+              "val_acc": 0.9824287387739165
+            },
+            {
+              "epoch": 8,
+              "train_loss": 0.005649292409943809,
+              "val_loss": 0.05330957580948083,
+              "train_acc": 0.998912952588009,
+              "val_acc": 0.9847715736040609
+            },
+            {
+              "epoch": 9,
+              "train_loss": 0.0035390226130781613,
+              "val_loss": 0.06882971141475558,
+              "train_acc": 0.9990801906513923,
+              "val_acc": 0.9820382663022257
+            },
+            {
+              "epoch": 10,
+              "train_loss": 0.002832782012475683,
+              "val_loss": 0.050031884571164816,
+              "train_acc": 0.999581904841542,
+              "val_acc": 0.9851620460757516
+            },
+            {
+              "epoch": 11,
+              "train_loss": 0.001643250293353688,
+              "val_loss": 0.05396756716780552,
+              "train_acc": 0.9998327619366167,
+              "val_acc": 0.9851620460757516
+            },
+            {
+              "epoch": 12,
+              "train_loss": 0.0015494067398600735,
+              "val_loss": 0.05350238172023967,
+              "train_acc": 0.9998327619366167,
+              "val_acc": 0.9863334634908238
+            },
+            {
+              "epoch": 13,
+              "train_loss": 0.0014765374553849706,
+              "val_loss": 0.05170127456725469,
+              "train_acc": 0.9997491429049251,
+              "val_acc": 0.9851620460757516
+            },
+            {
+              "epoch": 14,
+              "train_loss": 0.0012714560057985656,
+              "val_loss": 0.05264790233638022,
+              "train_acc": 0.9997491429049251,
+              "val_acc": 0.9836001561889887
+            },
+            {
+              "epoch": 15,
+              "train_loss": 0.0013266184274089697,
+              "val_loss": 0.05179850772459437,
+              "train_acc": 0.9996655238732336,
+              "val_acc": 0.9843811011323702
+            }
+          ]
+        },
+        "T_star": 1.3034565448760986,
+        "blood5_masked_no_T": {
+          "T_applied": 1.0,
+          "acc": 0.13159420289855073,
+          "ece_15bin": 0.6614905140019846
+        },
+        "blood5_masked_with_T": {
+          "T_applied": 1.3034565448760986,
+          "acc": 0.13159420289855073,
+          "ece_15bin": 0.5834968365160164
+        },
+        "blood5_classwise_ece_no_T": {
+          "basophil": {
+            "n": 132,
+            "acc": 0.0,
+            "ece": 0.6631626152631007
+          },
+          "eosinophil": {
+            "n": 148,
+            "acc": 0.04054054054054054,
+            "ece": 0.6774478067417404
+          },
+          "lymphocyte": {
+            "n": 1241,
+            "acc": 0.037066881547139406,
+            "ece": 0.7281602506768213
+          },
+          "monocyte": {
+            "n": 642,
+            "acc": 0.9781931464174455,
+            "ece": 0.08905097136616333
+          },
+          "neutrophil": {
+            "n": 3012,
+            "acc": 0.00033200531208499334,
+            "ece": 0.7931810754387184
+          }
+        },
+        "blood5_classwise_ece_with_T": {
+          "basophil": {
+            "n": 132,
+            "acc": 0.0,
+            "ece": 0.5668274421583521
+          },
+          "eosinophil": {
+            "n": 148,
+            "acc": 0.04054054054054054,
+            "ece": 0.5847962103985452
+          },
+          "lymphocyte": {
+            "n": 1241,
+            "acc": 0.037066881547139406,
+            "ece": 0.6484470512480817
+          },
+          "monocyte": {
+            "n": 642,
+            "acc": 0.9781931464174455,
+            "ece": 0.15280584290020185
+          },
+          "neutrophil": {
+            "n": 3012,
+            "acc": 0.00033200531208499334,
+            "ece": 0.7146697335568558
+          }
+        },
+        "blood5_acc_strat_no_T": {
+          "n_correct": 681,
+          "n_incorrect": 4494,
+          "n_total": 5175,
+          "accuracy": 0.13159420289855073,
+          "mean_conf_correct": 0.8645695447921753,
+          "mean_conf_incorrect": 0.7822521924972534,
+          "conf_gap": 0.08231735229492188
+        },
+        "blood5_acc_strat_with_T": {
+          "n_correct": 681,
+          "n_incorrect": 4494,
+          "n_total": 5175,
+          "accuracy": 0.13159420289855073,
+          "mean_conf_correct": 0.8017939925193787,
+          "mean_conf_incorrect": 0.7019524574279785,
+          "conf_gap": 0.09984153509140015
+        },
+        "pbc_no_T": {
+          "full_8class": {
+            "n": 2572,
+            "acc": 0.9910575427682737,
+            "ece_15bin": 0.0034094326441432544,
+            "acc_strat": {
+              "n_correct": 2549,
+              "n_incorrect": 23,
+              "accuracy": 0.9910575427682737,
+              "mean_conf_correct": 0.9958834052085876,
+              "mean_conf_incorrect": 0.810060441493988,
+              "conf_gap": 0.1858229637145996
+            }
+          },
+          "shared5class": {
+            "n": 1550,
+            "acc": 0.9980645161290322,
+            "ece_15bin": 0.0006979506823324504,
+            "classwise_ece": {
+              "basophil": {
+                "n": 184,
+                "acc": 1.0,
+                "ece": 0.004391948813977457
+              },
+              "eosinophil": {
+                "n": 469,
+                "acc": 1.0,
+                "ece": 0.00046129203808587503
+              },
+              "lymphocyte": {
+                "n": 183,
+                "acc": 1.0,
+                "ece": 0.0009268619975105637
+              },
+              "monocyte": {
+                "n": 214,
+                "acc": 0.9953271028037384,
+                "ece": 0.004847862453104189
+              },
+              "neutrophil": {
+                "n": 500,
+                "acc": 0.996,
+                "ece": 0.0023931388258933927
+              }
+            },
+            "acc_strat": {
+              "n_correct": 1547,
+              "n_incorrect": 3,
+              "n_total": 1550,
+              "accuracy": 0.9980645161290322,
+              "mean_conf_correct": 0.9980381727218628,
+              "mean_conf_incorrect": 0.650985062122345,
+              "conf_gap": 0.3470531105995178
+            }
+          }
+        },
+        "pbc_with_T": {
+          "full_8class": {
+            "n": 2572,
+            "acc": 0.9910575427682737,
+            "ece_15bin": 0.00134157154181883,
+            "acc_strat": {
+              "n_correct": 2549,
+              "n_incorrect": 23,
+              "accuracy": 0.9910575427682737,
+              "mean_conf_correct": 0.9919922351837158,
+              "mean_conf_incorrect": 0.7634270787239075,
+              "conf_gap": 0.22856515645980835
+            }
+          },
+          "shared5class": {
+            "n": 1550,
+            "acc": 0.9980645161290322,
+            "ece_15bin": 0.0030259540196387958,
+            "classwise_ece": {
+              "basophil": {
+                "n": 184,
+                "acc": 1.0,
+                "ece": 0.007392428167488269
+              },
+              "eosinophil": {
+                "n": 469,
+                "acc": 1.0,
+                "ece": 0.0028122075076804725
+              },
+              "lymphocyte": {
+                "n": 183,
+                "acc": 1.0,
+                "ece": 0.0024906019044052706
+              },
+              "monocyte": {
+                "n": 214,
+                "acc": 0.9953271028037384,
+                "ece": 0.009227456890534011
+              },
+              "neutrophil": {
+                "n": 500,
+                "acc": 0.996,
+                "ece": 0.0019992226958274757
+              }
+            },
+            "acc_strat": {
+              "n_correct": 1547,
+              "n_incorrect": 3,
+              "n_total": 1550,
+              "accuracy": 0.9980645161290322,
+              "mean_conf_correct": 0.9957965612411499,
+              "mean_conf_incorrect": 0.6041855812072754,
+              "conf_gap": 0.3916109800338745
+            }
+          }
+        }
+      },
+      {
+        "seed": 2,
+        "training": {
+          "best_val_loss": 0.052272095738779,
+          "epochs_run": 15,
+          "history": [
+            {
+              "epoch": 1,
+              "train_loss": 0.2267953586037347,
+              "val_loss": 0.08355184306602823,
+              "train_acc": 0.9308470607910361,
+              "val_acc": 0.9742288168684108
+            },
+            {
+              "epoch": 2,
+              "train_loss": 0.05974807187431081,
+              "val_loss": 0.10445386773630565,
+              "train_acc": 0.9806003846475457,
+              "val_acc": 0.9660288949629051
+            },
+            {
+              "epoch": 3,
+              "train_loss": 0.03431235828514554,
+              "val_loss": 0.08135908555209506,
+              "train_acc": 0.9892131449117819,
+              "val_acc": 0.9750097618117922
+            },
+            {
+              "epoch": 4,
+              "train_loss": 0.020144028460789318,
+              "val_loss": 0.08813903622483672,
+              "train_acc": 0.993728572623129,
+              "val_acc": 0.972276454509957
+            },
+            {
+              "epoch": 5,
+              "train_loss": 0.019328399926196005,
+              "val_loss": 0.05860564304359467,
+              "train_acc": 0.9933104774646709,
+              "val_acc": 0.9793049590003905
+            },
+            {
+              "epoch": 6,
+              "train_loss": 0.011684761118054707,
+              "val_loss": 0.0713617464204604,
+              "train_acc": 0.9961535245421858,
+              "val_acc": 0.9777430691136275
+            },
+            {
+              "epoch": 7,
+              "train_loss": 0.010531419904609606,
+              "val_loss": 0.061230890863758776,
+              "train_acc": 0.9969060958274103,
+              "val_acc": 0.9832096837172979
+            },
+            {
+              "epoch": 8,
+              "train_loss": 0.006344007616489627,
+              "val_loss": 0.05474377992018281,
+              "train_acc": 0.9983276193661678,
+              "val_acc": 0.9839906286606794
+            },
+            {
+              "epoch": 9,
+              "train_loss": 0.003253523211093374,
+              "val_loss": 0.06922439932333198,
+              "train_acc": 0.9994146667781587,
+              "val_acc": 0.9828192112456072
+            },
+            {
+              "epoch": 10,
+              "train_loss": 0.0038886521855497395,
+              "val_loss": 0.055097913719979165,
+              "train_acc": 0.9989965716197007,
+              "val_acc": 0.9843811011323702
+            },
+            {
+              "epoch": 11,
+              "train_loss": 0.002570200504999736,
+              "val_loss": 0.052272095738779,
+              "train_acc": 0.9997491429049251,
+              "val_acc": 0.9859429910191332
+            },
+            {
+              "epoch": 12,
+              "train_loss": 0.0011864413179104739,
+              "val_loss": 0.05459061237855223,
+              "train_acc": 0.9999163809683084,
+              "val_acc": 0.9855525185474424
+            },
+            {
+              "epoch": 13,
+              "train_loss": 0.0015414384114364925,
+              "val_loss": 0.054739528421041,
+              "train_acc": 0.999581904841542,
+              "val_acc": 0.9863334634908238
+            },
+            {
+              "epoch": 14,
+              "train_loss": 0.0014125693925426722,
+              "val_loss": 0.05363755563470255,
+              "train_acc": 0.999581904841542,
+              "val_acc": 0.9871144084342054
+            },
+            {
+              "epoch": 15,
+              "train_loss": 0.0010880043491633853,
+              "val_loss": 0.05374178140975324,
+              "train_acc": 0.9997491429049251,
+              "val_acc": 0.9871144084342054
+            }
+          ]
+        },
+        "T_star": 1.3164615631103516,
+        "blood5_masked_no_T": {
+          "T_applied": 1.0,
+          "acc": 0.12811594202898552,
+          "ece_15bin": 0.6628572275615545
+        },
+        "blood5_masked_with_T": {
+          "T_applied": 1.3164615631103516,
+          "acc": 0.12811594202898552,
+          "ece_15bin": 0.5703228224619575
+        },
+        "blood5_classwise_ece_no_T": {
+          "basophil": {
+            "n": 132,
+            "acc": 0.015151515151515152,
+            "ece": 0.6840489572196295
+          },
+          "eosinophil": {
+            "n": 148,
+            "acc": 0.0,
+            "ece": 0.7103774922119606
+          },
+          "lymphocyte": {
+            "n": 1241,
+            "acc": 0.0056406124093473006,
+            "ece": 0.7424120094438027
+          },
+          "monocyte": {
+            "n": 642,
+            "acc": 0.9984423676012462,
+            "ece": 0.16317586507938361
+          },
+          "neutrophil": {
+            "n": 3012,
+            "acc": 0.004316069057104913,
+            "ece": 0.8028822785829643
+          }
+        },
+        "blood5_classwise_ece_with_T": {
+          "basophil": {
+            "n": 132,
+            "acc": 0.015151515151515152,
+            "ece": 0.5831248231909492
+          },
+          "eosinophil": {
+            "n": 148,
+            "acc": 0.0,
+            "ece": 0.6064170145907918
+          },
+          "lymphocyte": {
+            "n": 1241,
+            "acc": 0.0056406124093473006,
+            "ece": 0.6484792266734467
+          },
+          "monocyte": {
+            "n": 642,
+            "acc": 0.9984423676012462,
+            "ece": 0.25097167352649646
+          },
+          "neutrophil": {
+            "n": 3012,
+            "acc": 0.004316069057104913,
+            "ece": 0.7108431293234564
+          }
+        },
+        "blood5_acc_strat_no_T": {
+          "n_correct": 663,
+          "n_incorrect": 4512,
+          "n_total": 5175,
+          "accuracy": 0.12811594202898552,
+          "mean_conf_correct": 0.8249983191490173,
+          "mean_conf_incorrect": 0.7859734296798706,
+          "conf_gap": 0.03902488946914673
+        },
+        "blood5_acc_strat_with_T": {
+          "n_correct": 663,
+          "n_incorrect": 4512,
+          "n_total": 5175,
+          "accuracy": 0.12811594202898552,
+          "mean_conf_correct": 0.7379346489906311,
+          "mean_conf_incorrect": 0.692635178565979,
+          "conf_gap": 0.0452994704246521
+        },
+        "pbc_no_T": {
+          "full_8class": {
+            "n": 2572,
+            "acc": 0.9906687402799378,
+            "ece_15bin": 0.003477972817736123,
+            "acc_strat": {
+              "n_correct": 2548,
+              "n_incorrect": 24,
+              "accuracy": 0.9906687402799378,
+              "mean_conf_correct": 0.9955269694328308,
+              "mean_conf_incorrect": 0.8318093419075012,
+              "conf_gap": 0.1637176275253296
+            }
+          },
+          "shared5class": {
+            "n": 1550,
+            "acc": 0.9993548387096775,
+            "ece_15bin": 0.0023577855863878812,
+            "classwise_ece": {
+              "basophil": {
+                "n": 184,
+                "acc": 1.0,
+                "ece": 0.0023266102956688833
+              },
+              "eosinophil": {
+                "n": 469,
+                "acc": 1.0,
+                "ece": 0.0002802006725563508
+              },
+              "lymphocyte": {
+                "n": 183,
+                "acc": 1.0,
+                "ece": 0.0031852389945358447
+              },
+              "monocyte": {
+                "n": 214,
+                "acc": 1.0,
+                "ece": 0.003171253427166796
+              },
+              "neutrophil": {
+                "n": 500,
+                "acc": 0.998,
+                "ece": 0.00034519743919372153
+              }
+            },
+            "acc_strat": {
+              "n_correct": 1549,
+              "n_incorrect": 1,
+              "n_total": 1550,
+              "accuracy": 0.9993548387096775,
+              "mean_conf_correct": 0.998228907585144,
+              "mean_conf_incorrect": 0.9992330074310303,
+              "conf_gap": -0.0010040998458862305
+            }
+          }
+        },
+        "pbc_with_T": {
+          "full_8class": {
+            "n": 2572,
+            "acc": 0.9906687402799378,
+            "ece_15bin": 0.0016559616866786706,
+            "acc_strat": {
+              "n_correct": 2548,
+              "n_incorrect": 24,
+              "accuracy": 0.9906687402799378,
+              "mean_conf_correct": 0.9914683699607849,
+              "mean_conf_incorrect": 0.7868015170097351,
+              "conf_gap": 0.2046668529510498
+            }
+          },
+          "shared5class": {
+            "n": 1550,
+            "acc": 0.9993548387096775,
+            "ece_15bin": 0.003438685151838491,
+            "classwise_ece": {
+              "basophil": {
+                "n": 184,
+                "acc": 1.0,
+                "ece": 0.005192967860595044
+              },
+              "eosinophil": {
+                "n": 469,
+                "acc": 1.0,
+                "ece": 0.001627724435029499
+              },
+              "lymphocyte": {
+                "n": 183,
+                "acc": 1.0,
+                "ece": 0.005170763841743679
+              },
+              "monocyte": {
+                "n": 214,
+                "acc": 1.0,
+                "ece": 0.006965803487278589
+              },
+              "neutrophil": {
+                "n": 500,
+                "acc": 0.998,
+                "ece": 0.0023482428193092268
+              }
+            },
+            "acc_strat": {
+              "n_correct": 1549,
+              "n_incorrect": 1,
+              "n_total": 1550,
+              "accuracy": 0.9993548387096775,
+              "mean_conf_correct": 0.9959171414375305,
+              "mean_conf_incorrect": 0.9943846464157104,
+              "conf_gap": 0.0015324950218200684
+            }
+          }
+        }
+      }
+    ],
+    "aggregate": {
+      "T_star": {
+        "mean": 1.3106805483500164,
+        "std": 0.005406433645140287,
+        "per_seed": [
+          1.3121235370635986,
+          1.3034565448760986,
+          1.3164615631103516
+        ]
+      },
+      "blood5_masked_noT_acc": {
+        "mean": 0.12837359098228665,
+        "std": 0.002530999382207857,
+        "per_seed": [
+          0.12541062801932368,
+          0.13159420289855073,
+          0.12811594202898552
+        ]
+      },
+      "blood5_masked_noT_ece": {
+        "mean": 0.7032945689698157,
+        "std": 0.058156125701457645,
+        "per_seed": [
+          0.7855359653459079,
+          0.6614905140019846,
+          0.6628572275615545
+        ]
+      },
+      "blood5_masked_T_acc": {
+        "mean": 0.12837359098228665,
+        "std": 0.002530999382207857,
+        "per_seed": [
+          0.12541062801932368,
+          0.13159420289855073,
+          0.12811594202898552
+        ]
+      },
+      "blood5_masked_T_ece": {
+        "mean": 0.6262058729912349,
+        "std": 0.06992228245941184,
+        "per_seed": [
+          0.7247979599957304,
+          0.5834968365160164,
+          0.5703228224619575
+        ]
+      },
+      "blood5_astrat_noT_accuracy": {
+        "mean": 0.12837359098228665,
+        "std": 0.002530999382207857,
+        "per_seed": [
+          0.12541062801932368,
+          0.13159420289855073,
+          0.12811594202898552
+        ]
+      },
+      "blood5_astrat_noT_mean_conf_correct": {
+        "mean": 0.8589577277501425,
+        "std": 0.025744383660988624,
+        "per_seed": [
+          0.8873053193092346,
+          0.8645695447921753,
+          0.8249983191490173
+        ]
+      },
+      "blood5_astrat_noT_mean_conf_incorrect": {
+        "mean": 0.827520747979482,
+        "std": 0.06140688808768717,
+        "per_seed": [
+          0.914336621761322,
+          0.7822521924972534,
+          0.7859734296798706
+        ]
+      },
+      "blood5_astrat_noT_conf_gap": {
+        "mean": 0.0314369797706604,
+        "std": 0.044962683445567364,
+        "per_seed": [
+          -0.027031302452087402,
+          0.08231735229492188,
+          0.03902488946914673
+        ]
+      },
+      "blood5_astrat_T_mean_conf_correct": {
+        "mean": 0.787415087223053,
+        "std": 0.03599622341143149,
+        "per_seed": [
+          0.8225166201591492,
+          0.8017939925193787,
+          0.7379346489906311
+        ]
+      },
+      "blood5_astrat_T_mean_conf_incorrect": {
+        "mean": 0.7495890259742737,
+        "std": 0.0740543460507829,
+        "per_seed": [
+          0.8541794419288635,
+          0.7019524574279785,
+          0.692635178565979
+        ]
+      },
+      "blood5_astrat_T_conf_gap": {
+        "mean": 0.0378260612487793,
+        "std": 0.053945885551457046,
+        "per_seed": [
+          -0.031662821769714355,
+          0.09984153509140015,
+          0.0452994704246521
+        ]
+      },
+      "pbc_8class_noT_acc": {
+        "mean": 0.9902799377916018,
+        "std": 0.0008399093699336252,
+        "per_seed": [
+          0.9891135303265941,
+          0.9910575427682737,
+          0.9906687402799378
+        ]
+      },
+      "pbc_8class_noT_ece": {
+        "mean": 0.004121781789836264,
+        "std": 0.0009593567529656628,
+        "per_seed": [
+          0.005477939907629414,
+          0.0034094326441432544,
+          0.003477972817736123
+        ]
+      },
+      "pbc_8class_T_ece": {
+        "mean": 0.00215289940282186,
+        "std": 0.0009339448256564,
+        "per_seed": [
+          0.003461164979968079,
+          0.00134157154181883,
+          0.0016559616866786706
+        ]
+      },
+      "pbc_8class_noT_acc_strat_conf_correct": {
+        "mean": 0.9958564639091492,
+        "std": 0.000258734657116677,
+        "per_seed": [
+          0.996159017086029,
+          0.9958834052085876,
+          0.9955269694328308
+        ]
+      },
+      "pbc_8class_noT_acc_strat_conf_incorrect": {
+        "mean": 0.8251111507415771,
+        "std": 0.010663866904259278,
+        "per_seed": [
+          0.8334636688232422,
+          0.810060441493988,
+          0.8318093419075012
+        ]
+      },
+      "pbc_shared5_noT_acc": {
+        "mean": 0.9987096774193548,
+        "std": 0.0005267719876953266,
+        "per_seed": [
+          0.9987096774193548,
+          0.9980645161290322,
+          0.9993548387096775
+        ]
+      },
+      "pbc_shared5_noT_ece": {
+        "mean": 0.0011342586304551824,
+        "std": 0.000876944810834052,
+        "per_seed": [
+          0.0003470396226452156,
+          0.0006979506823324504,
+          0.0023577855863878812
+        ]
+      },
+      "pbc_shared5_T_ece": {
+        "mean": 0.0029164952103809655,
+        "std": 0.0004773690780950059,
+        "per_seed": [
+          0.002284846459665608,
+          0.0030259540196387958,
+          0.003438685151838491
+        ]
+      },
+      "blood5_cece_noT_basophil_ece": {
+        "mean": 0.7350988327102227,
+        "std": 0.08738132566379948,
+        "per_seed": [
+          0.8580849256479377,
+          0.6631626152631007,
+          0.6840489572196295
+        ]
+      },
+      "blood5_cece_T_basophil_ece": {
+        "mean": 0.6377023705328353,
+        "std": 0.08895745763998682,
+        "per_seed": [
+          0.7631548462492045,
+          0.5668274421583521,
+          0.5831248231909492
+        ]
+      },
+      "blood5_cece_noT_eosinophil_ece": {
+        "mean": 0.7385160957236548,
+        "std": 0.0644954432373152,
+        "per_seed": [
+          0.8277229882172638,
+          0.6774478067417404,
+          0.7103774922119606
+        ]
+      },
+      "blood5_cece_T_eosinophil_ece": {
+        "mean": 0.6403137377656258,
+        "std": 0.06383857738316276,
+        "per_seed": [
+          0.7297279883075406,
+          0.5847962103985452,
+          0.6064170145907918
+        ]
+      },
+      "blood5_cece_noT_lymphocyte_ece": {
+        "mean": 0.7713449831342557,
+        "std": 0.051325762290249675,
+        "per_seed": [
+          0.843462689282143,
+          0.7281602506768213,
+          0.7424120094438027
+        ]
+      },
+      "blood5_cece_T_lymphocyte_ece": {
+        "mean": 0.6884721251279156,
+        "std": 0.056581252379119575,
+        "per_seed": [
+          0.7684900974622184,
+          0.6484470512480817,
+          0.6484792266734467
+        ]
+      },
+      "blood5_cece_noT_monocyte_ece": {
+        "mean": 0.11803779832299251,
+        "std": 0.03234472525050791,
+        "per_seed": [
+          0.10188655852343058,
+          0.08905097136616333,
+          0.16317586507938361
+        ]
+      },
+      "blood5_cece_T_monocyte_ece": {
+        "mean": 0.19024090601957222,
+        "std": 0.04332935846760879,
+        "per_seed": [
+          0.16694520163201837,
+          0.15280584290020185,
+          0.25097167352649646
+        ]
+      },
+      "blood5_cece_noT_neutrophil_ece": {
+        "mean": 0.8472106245805225,
+        "std": 0.06966220873039576,
+        "per_seed": [
+          0.945568519719885,
+          0.7931810754387184,
+          0.8028822785829643
+        ]
+      },
+      "blood5_cece_T_neutrophil_ece": {
+        "mean": 0.7734861235608829,
+        "std": 0.0858989609569466,
+        "per_seed": [
+          0.8949455078023364,
+          0.7146697335568558,
+          0.7108431293234564
+        ]
+      }
+    },
+    "interpretation": {
+      "verdict": "both",
+      "reasoning": "Representation collapse: accuracy=12.8% << chance for 5-class (20%). AND miscalibration: mean confidence on INCORRECT predictions = 0.828 (confidently wrong). Confidence gap correct-incorrect = 0.031 \u2248 0 (model cannot distinguish its own errors). PBC in-domain conf gap = 0.171 >> 0 (PBC is well-calibrated). The high ECE (70.3%) is driven by BOTH: (a) near-total feature collapse to one class, AND (b) persistent overconfidence on wrong predictions after masking.",
+      "key_numbers": {
+        "cross_site_accuracy_mean": 0.1284,
+        "cross_site_ece_masked_noT_mean": 0.7033,
+        "cross_site_ece_masked_T_mean": 0.6262,
+        "cross_site_mean_conf_CORRECT": 0.859,
+        "cross_site_mean_conf_INCORRECT": 0.8275,
+        "cross_site_conf_gap_correct_minus_incorrect": 0.0314,
+        "indomain_pbc_accuracy_mean": 0.9903,
+        "indomain_pbc_ece_noT_mean": 0.0041,
+        "indomain_pbc_mean_conf_CORRECT": 0.9959,
+        "indomain_pbc_mean_conf_INCORRECT": 0.8251,
+        "indomain_pbc_conf_gap": 0.1707,
+        "T_star_mean": 1.3107,
+        "miscalib_threshold_used": 0.7,
+        "collapse_threshold_used": 0.2,
+        "is_miscalibrated": true,
+        "is_collapsed": true
+      }
+    },
+    "note_on_masked_softmax_vs_scenarioC": "Label-aware masked softmax (set ig/erythroblast/platelet logits to -1e9 then softmax) is mathematically identical to Scenario C from refine-01 (extract shared logits and renormalize). Accuracy/ECE values should closely match refine-01 Scenario C numbers. New in ablation-03: classwise ECE, accuracy-stratified calibration, PBC reference."
+  },
+  "subject_executed": "Label-aware masked softmax + classwise ECE + accuracy-stratified calibration on Blood_5 cross-site target; PBC in-domain reference contrast. 3 seeds, ResNet-18 on Barcelona PBC 8-class, T fitted on PBC val. Masking: PBC-only logits (ig, erythroblast, platelet) set to -1e9 before renorm.",
+  "notes": "Interpretation: 'both'. Cross-site acc=0.1284 ECE_masked_noT=0.7033. Mean conf on INCORRECT Blood5 predictions = 0.8275 > 0.7 threshold \u2192 model is CONFIDENTLY WRONG (miscalibration). Accuracy at 12.8% << 20% random \u2192 COLLAPSED. PBC in-domain: acc=0.9903 ECE=0.0041 conf_incorrect=0.8251."
+}
