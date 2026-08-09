@@ -1,10 +1,10 @@
-# EXPERIMENT BRIEF — round ablation-03 (probe)
+# EXPERIMENT BRIEF — round increase_complexity-04 (probe)
 
 ## THIS ROUND (do exactly this)
-SEPARATE CALIBRATION FROM COLLAPSE. Reviewer objection: at ~12.8% cross-site accuracy, 15-bin ECE conflates accuracy failure with miscalibration, so 'cross-site ECE=70%' is not interpretable as a calibration number. Fix it. Reuse the same 3 seeds and the trained PBC checkpoints; do NOT retrain from scratch if avoidable. Do exactly: (1) LABEL-AWARE MASKED SOFTMAX - zero the 3 PBC-only logits (ig, erythroblast, platelet) BEFORE renormalising over the 5 shared classes, so no probability mass leaks to classes absent from the target. Report target accuracy and ECE-15 with and without source-fit T under this masking, per seed. (2) CLASSWISE ECE - per-class ECE on the target for each of the 5 shared classes, with and without T. (3) ACCURACY-STRATIFIED CALIBRATION - split target predictions into correct vs incorrect and report mean confidence for each, with and without T. This shows whether the model is confidently wrong (a calibration statement) or simply wrong (an accuracy statement). (4) Report the same three quantities on the PBC in-domain test set as the reference contrast. (5) State explicitly in metrics.interpretation whether, after masking, the cross-site failure is best described as 'miscalibration', 'representation_collapse', or 'both', with the numbers that decide it. Emit per-seed values and aggregate mean/std throughout.
+TWO DISCRIMINATING ARMS the reviewer requires. Reuse the 3 existing PBC-trained checkpoints and their fitted T* (mean 1.311); do not retrain unless an arm needs it. ARM A - STAIN NORMALISATION (decides whether the cross-site collapse is an appearance artifact or irreducible): apply Reinhard colour normalisation AND Macenko stain normalisation to Blood_5, targeting Barcelona PBC statistics as reference, then re-evaluate each seed with masked softmax over the 5 shared classes. Report accuracy, ECE-15 (with and without T*), confusion matrix and the correct-vs-incorrect confidence gap for: raw Blood_5, Reinhard-normalised, Macenko-normalised. If accuracy recovers substantially (say above the 20%% chance floor, or approaching in-domain), the shift is APPEARANCE-DRIVEN AND FIXABLE and the earlier 'genuine_domain_shift' verdict is WRONG - say so explicitly in metrics.arm_a_verdict as one of 'appearance_artifact_fixable' | 'irreducible_shift' | 'partial'. ARM B - PATIENT SHIFT vs SITE SHIFT (the mechanism): build a PATIENT-STRATIFIED split of Barcelona PBC so that test patients never appear in training (use patient/subject IDs if available; if PBC exposes no patient IDs, say so plainly in metrics.arm_b_feasible=false and do NOT fake it). Train or re-evaluate accordingly and report accuracy, ECE and confidence gap for: (i) random in-domain split, (ii) patient-held-out split, (iii) cross-site Blood_5. This three-point contrast isolates how much degradation comes from patient shift alone versus acquisition/site shift. Emit metrics.arm_b_verdict describing which shift dominates, with numbers. Per-seed and aggregate mean/std throughout.
 
 Prior rounds' code and results are already committed under results/*/. Read them
-for context and build on them; write this round's outputs under results/ablation-03/.
+for context and build on them; write this round's outputs under results/increase_complexity-04/.
 
 ## Idea
 Source-Fit Temperature Scaling Under Cross-Site Acquisition Shift in Blood-Smear Classification
@@ -45,4 +45,4 @@ Sanity gates: fixed seed, verify loss at init, input-independent baseline, overf
 - refutes the hypothesis if: 95% CI on mean D includes 0 across 8 seeds
 - smallest effect worth caring about (SESOI): 1 pp absolute in D (below 15-bin ECE quantisation noise at N=500)
 
-Record everything under results/ablation-03/. Do not commit weights.
+Record everything under results/increase_complexity-04/. Do not commit weights.
